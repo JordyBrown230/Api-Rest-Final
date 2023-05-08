@@ -10,6 +10,7 @@ class DetalleOrden extends Model
     use HasFactory;
 
     protected $table='detalleorden';
+    
     protected $fillable=[
         'idDetalleOrden',
         'cantidad',

@@ -11,7 +11,6 @@ class Cliente extends Model
    
     protected $table='cliente';
     protected $fillable=[
-        'idCliente',
         'cedula',
         'nombre',
         'fechaNac',

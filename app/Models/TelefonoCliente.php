@@ -10,6 +10,7 @@ class TelefonoCliente extends Model
     use HasFactory;
 
     protected $table='telefonoscliente';
+    protected $primarykey="idTelefonosCliente";
     protected $fillable=[
         'numTelefono','cliente'];
     public function cliente(){

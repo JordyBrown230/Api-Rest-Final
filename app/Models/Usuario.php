@@ -11,8 +11,8 @@ class Usuario extends Model
 
    
     protected $table='usuario';
+    protected $primarykey="idUsuario";
     protected $fillable = [
-        'idUsuario',
         'nombreUsuario',
         'password',
         'tipoUsuario',
