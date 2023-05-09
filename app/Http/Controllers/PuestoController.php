@@ -137,7 +137,7 @@ class PuestoController extends Controller
     }
     
     
-    public function delete($id){
+    public function destroy($id){
         $empleado = Puesto::find($id);
         if ($empleado) {
             $empleado->delete();
