@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Empleado;
 use Illuminate\Http\Request;
 
+
 class EmpleadoController extends Controller
 {
     //
@@ -101,9 +102,9 @@ class EmpleadoController extends Controller
     return response()->json($response, $response['status']);
     }
 
-    public function update(Request $request, $idEmpleado){
+    public function update(Request $request){
         $data_input = $request->input('data', null);
-    
+
         if (is_array($data_input)) {
             $data = $data_input;
         } else {
@@ -127,7 +128,7 @@ class EmpleadoController extends Controller
             $validate = \validator($data, $rules);
     
             if (!$validate->fails()) {
-                $empleado = Empleado::find($idEmpleado);
+                    $empleado = Empleado::find($data['idEmpleado']);
                 if ($empleado) {
                     $empleado->idEmpleado = $data['idEmpleado'];
                     $empleado->cedula = $data['cedula'];

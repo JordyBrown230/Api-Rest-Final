@@ -10,6 +10,9 @@ class Empleado extends Model
     use HasFactory;
 
     protected $table='empleado';
+
+    protected $primaryKey = 'idEmpleado';
+
     protected $fillable=[
         'idEmpleado',
         'cedula',

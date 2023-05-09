@@ -18,9 +18,11 @@ Route::prefix('api')->group(
     function(){
         //RUTAS ESPECÍFICAS
        // Route::get('/category',[CategoryController::class,'index']);
-        //RUTAS AUTOMÁTICAS Restful
+       // Route::put('/empleados', 'EmpleadoController@update');
+        Route::put('/empleado', [EmpleadoController::class, 'update']);
+       //RUTAS AUTOMÁTICAS Restful
         Route::resource('/puesto',PuestoController::class,['except'=>['create','edit']]);
-        Route::resource('/empleado',EmpleadoController::class,['except'=>['create','edit']]);
+        Route::resource('/empleado',EmpleadoController::class,['except'=>['create']]);
     }
 );
 
