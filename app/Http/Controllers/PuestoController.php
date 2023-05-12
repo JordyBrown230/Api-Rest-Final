@@ -137,10 +137,6 @@ class PuestoController extends Controller
     }
     
     
-    public function delete($id){
-        $puesto = Puesto::find($id);
-        if ($puesto) {
-            $puesto->delete();
             $response = array(
                 'status' => 200,
                 'message' => 'puesto eliminado correctamente'
@@ -153,4 +149,5 @@ class PuestoController extends Controller
         }
         return response()->json($response, $response['status']);
     }
+
 }
