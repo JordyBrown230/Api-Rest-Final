@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Puesto;
 use Illuminate\Http\Request;
 
@@ -33,13 +32,13 @@ class PuestoController extends Controller
         if($puesto) {
             $response = array(
                 'status' => 200,
-                'message' => 'Empleado encontrado',
+                'message' => 'Puesto encontrado',
                 'data' => $puesto
             );
         } else {
             $response = array(
                 'status' => 404,
-                'message' => 'Empleado no encontrado'
+                'message' => 'Puesto no encontrado'
             );
         }
         return response()->json($response, $response['status']);
@@ -50,10 +49,11 @@ class PuestoController extends Controller
     
         if (is_array($data_input)) {
             $data = $data_input;
+           
         } else {
             $data = json_decode($data_input, true);
         }
-    
+        
         if (!empty($data)) {
             $data = array_map('trim', $data);
     
@@ -138,17 +138,17 @@ class PuestoController extends Controller
     
     
     public function delete($id){
-        $empleado = Puesto::find($id);
-        if ($empleado) {
-            $empleado->delete();
+        $puesto = Puesto::find($id);
+        if ($puesto) {
+            $puesto->delete();
             $response = array(
                 'status' => 200,
-                'message' => 'Empleado eliminado correctamente'
+                'message' => 'puesto eliminado correctamente'
             );
         } else {
             $response = array(
                 'status' => 404,
-                'message' => 'Empleado no encontrado'
+                'message' => 'puesto no encontrado'
             );
         }
         return response()->json($response, $response['status']);
