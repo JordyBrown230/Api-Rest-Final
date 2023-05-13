@@ -165,7 +165,7 @@ class ProductoController extends Controller
     }
     
 
-    public function delete($id){
+    public function destroy($id){
         $producto = Producto::find($id);
         if ($producto) {
             $producto->delete();

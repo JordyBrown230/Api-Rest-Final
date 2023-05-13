@@ -136,15 +136,18 @@ class PuestoController extends Controller
         return response()->json($response, $response['status']);
     }
     
-    
+    public function destroy($id){
+        $puesto = Puesto::find($id);
+        if ($puesto) {
+            $puesto->delete();
             $response = array(
                 'status' => 200,
-                'message' => 'puesto eliminado correctamente'
+                'message' => 'Puesto eliminado correctamente'
             );
         } else {
             $response = array(
                 'status' => 404,
-                'message' => 'puesto no encontrado'
+                'message' => 'Puesto no encontrado'
             );
         }
         return response()->json($response, $response['status']);

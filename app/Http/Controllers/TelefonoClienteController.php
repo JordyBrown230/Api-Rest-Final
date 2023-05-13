@@ -137,7 +137,7 @@ class TelefonoClienteController extends Controller
     }
     
     
-    public function delete($id){
+    public function destroy($id){
         $Telefono = TelefonoCliente::find($id);
         if ($Telefono) {
             $Telefono->delete();

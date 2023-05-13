@@ -154,7 +154,7 @@ class VehiculoController extends Controller
     }
     
 
-    public function delete($id){
+    public function destroy($id){
         $vehiculo = Vehiculo::find($id);
         if ($vehiculo) {
             $vehiculo->delete();

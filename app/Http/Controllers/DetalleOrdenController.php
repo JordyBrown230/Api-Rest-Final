@@ -155,7 +155,7 @@ class DetalleOrdenController extends Controller
     }
     
 
-    public function delete($id){
+    public function destroy($id){
         $detalleOrden = DetalleOrden::find($id);
         if ($detalleOrden) {
             $detalleOrden->delete();

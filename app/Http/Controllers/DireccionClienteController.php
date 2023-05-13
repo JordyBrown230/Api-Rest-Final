@@ -137,7 +137,7 @@ class DireccionClienteController extends Controller
     }
     
     
-    public function delete($id){
+    public function destroy($id){
         $direccionCliente = DireccionCliente::find($id);
         if ($direccionCliente) {
             $direccionCliente->delete();

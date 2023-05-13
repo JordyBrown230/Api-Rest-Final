@@ -151,7 +151,7 @@ class ProveedorController extends Controller
     }
     
 
-    public function delete($id){
+    public function destroy($id){
         $proveedor = Proveedor::find($id);
         if ($proveedor) {
             $proveedor->delete();

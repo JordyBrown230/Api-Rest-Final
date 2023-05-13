@@ -150,7 +150,7 @@ class ClienteController extends Controller
     }
     
 
-    public function delete($id){
+    public function destroy($id){
         $cliente = Cliente::find($id);
         if ($cliente) {
             $cliente->delete();

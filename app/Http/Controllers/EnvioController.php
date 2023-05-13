@@ -154,7 +154,7 @@ class EnvioController extends Controller
     }
     
 
-    public function delete($id){
+    public function destroy($id){
         $envio = Envio::find($id);
         if ($envio) {
             $envio->delete();

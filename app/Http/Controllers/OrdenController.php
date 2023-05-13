@@ -165,7 +165,7 @@ class OrdenController extends Controller
     }
     
 
-    public function delete($id){
+    public function destroy($id){
         $orden = Orden::find($id);
         if ($orden) {
             $orden->delete();
