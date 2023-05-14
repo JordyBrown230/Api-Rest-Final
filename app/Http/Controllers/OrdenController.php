@@ -56,21 +56,19 @@ class OrdenController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'idOrden' => 'required|numeric',
             'tipoRetiro' => 'required|alpha',
             'fechaOrden' => 'required|date',
             'total'=> 'required|numeric',
             'ivaTotal' => 'required|numeric',
             'envio' => 'required|exists:envio,idEnvio',
             'cliente'  => 'required|exists:cliente,cedula',
-            'empleado'  => 'required|exists:empleado,idEmpleado',
+            'empleado'  => 'required|exists:empleado,id_empleado',
         ];
 
         $validate = \validator($data, $rules);
 
         if (!$validate->fails()) {
             $orden = new Orden();
-            $orden->idOrden = $data['idOrden'];
             $orden->tipoRetiro = $data['tipoRetiro'];
             $orden->fechaOrden = $data['fechaOrden'];
             $orden->total = $data['total'];
@@ -120,7 +118,7 @@ class OrdenController extends Controller
                 'ivaTotal' => 'required|numeric',
                 'envio' => 'required|exists:envio,idEnvio',
                 'cliente'  => 'required|exists:cliente,cedula',
-                'empleado'  => 'required|exists:empleado,idEmpleado',
+                'empleado'  => 'required|exists:empleado,id_empleado',
             ];
     
             $validate = \validator($data, $rules);

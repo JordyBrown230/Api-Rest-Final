@@ -11,7 +11,7 @@ class Puesto extends Model
 
     protected $table='puesto';
 
-    protected $primarykey="idPuesto";
+    protected $primaryKey="idPuesto";
 
     protected $fillable=['nombre','salario'];
    

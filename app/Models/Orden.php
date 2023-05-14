@@ -10,8 +10,9 @@ class Orden extends Model
     use HasFactory;
 
     protected $table='orden';
+    protected $primaryKey="idOrden";
+
     protected $fillable=[
-        'idOrden',
         'tipoRetiro',
         'fechaOrden',
         'total',
