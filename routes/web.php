@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PuestoController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\TelefonoClienteController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +29,8 @@ Route::prefix('api')->group(
         Route::resource('/categoria',CategoriaController::class,['except'=>['create','edit']]);
         Route::put('/categoria',[CategoriaController::class,'update']);
         Route::delete('/categoria/{id}',[CategoriaController::class,'destroy']);
+        Route::delete('/telefonocliente/{id}',[TelefonoClienteController::class,'destroy']);
+
     }
 );
 
