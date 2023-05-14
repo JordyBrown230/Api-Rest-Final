@@ -57,7 +57,7 @@ class DireccionClienteController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'direccion' => 'required|alpha_numeric',
+                'direccion' => 'required|alpha',
                 'cliente' => 'required|exists:cliente,cedula',
             ];
     
@@ -99,7 +99,7 @@ class DireccionClienteController extends Controller
         if (!empty($data)) {
             $data = array_map('trim', $data);
             $rules = [
-                'direccion' => 'required|alpha_numeric',
+                'direccion' => 'required|alpha',
                 'cliente' => 'required|exists:cliente,cedula',
             ];
             $validate = \validator($data, $rules);

@@ -10,6 +10,9 @@ class Vehiculo extends Model
     use HasFactory;
 
     protected $table='vehiculo';
+
+    protected $primaryKey ='numUnidad';
+
     protected $fillable=[
         'numUnidad',
         'placa',

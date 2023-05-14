@@ -56,7 +56,6 @@ class DetalleOrdenController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'idDetalleOrden' => 'required|numeric',
             'cantidad' => 'required|numeric',
             'precioUnitario' => 'required|numeric',
             'ivaUnitario'=> 'required|numeric',
@@ -68,7 +67,6 @@ class DetalleOrdenController extends Controller
 
         if (!$validate->fails()) {
             $detalleOrden = new DetalleOrden();
-            $detalleOrden->idDetalleOrden = $data['idDetalleOrden'];
             $detalleOrden->cantidad = $data['cantidad'];
             $detalleOrden->precioUnitario = $data['precioUnitario'];
             $detalleOrden->ivaUnitario = $data['ivaUnitario'];
@@ -108,7 +106,6 @@ class DetalleOrdenController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'idDetalleOrden' => 'required|numeric',
                 'cantidad' => 'required|numeric',
                 'precioUnitario' => 'required|numeric',
                 'ivaUnitario'=> 'required|numeric',
@@ -120,7 +117,6 @@ class DetalleOrdenController extends Controller
             if (!$validate->fails()) {
                     $detalleOrden = DetalleOrden::find($data['idDetalleOrden']);
                 if ($detalleOrden) {
-                    $detalleOrden->idDetalleOrden = $data['idDetalleOrden'];
                     $detalleOrden->cantidad = $data['cantidad'];
                     $detalleOrden->precioUnitario = $data['precioUnitario'];
                     $detalleOrden->ivaUnitario = $data['ivaUnitario'];

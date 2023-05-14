@@ -10,6 +10,10 @@ class Envio extends Model
     use HasFactory;
 
     protected $table='envio';
+
+      protected $primaryKey = 'idEnvio';
+
+    
     protected $fillable=[
         'idEnvio',
         'direccion',

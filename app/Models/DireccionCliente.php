@@ -10,7 +10,7 @@ class DireccionCliente extends Model
     use HasFactory;
 
     protected $table='direccionescliente';
-    protected $primarykey="idDireccionesCliente";
+    protected $primaryKey="idDireccionesCliente";
 
     protected $fillable=[
         'direccion','cliente'];

@@ -56,11 +56,11 @@ class VehiculoController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'numUnidad' => 'required|numeric',
-            'placa' => 'required|alpha_numeric',
-            'color' => 'required|alpha_numeric',
-            'tipo' => 'required|alpha_numeric',
-            'modelo' => 'required|alpha_numeric',
+            'numUnidad' => 'required|numerIc',
+            'placa' => 'required|alpha_num',
+            'color' => 'required|alpha_num',
+            'tipo' => 'required|alpha_num',
+            'modelo' => 'required|alpha_num',
             
         ];
 
@@ -109,10 +109,10 @@ class VehiculoController extends Controller
     
             $rules = [
                 'numUnidad' => 'required|numeric',
-                'placa' => 'required|alpha_numeric',
-                'color' => 'required|alpha_numeric',
-                'tipo' => 'required|alpha_numeric',
-                'modelo' => 'required|alpha_numeric',
+                'placa' => 'required|alpha_num',
+                'color' => 'required|alpha_num',
+                'tipo' => 'required|alpha_num',
+                'modelo' => 'required|alpha_num',
             ];
     
             $validate = \validator($data, $rules);

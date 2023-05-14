@@ -57,7 +57,7 @@ class TelefonoClienteController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'numTelefono' => 'required|alpha_numeric',
+                'numTelefono' => 'required|alpha_num',
                 'cliente' => 'required|exists:cliente,cedula',
             ];
     
@@ -99,7 +99,7 @@ class TelefonoClienteController extends Controller
         if (!empty($data)) {
             $data = array_map('trim', $data);
             $rules = [
-                'numTelefono' => 'required|alpha_numeric',
+                'numTelefono' => 'required|alpha_num',
                 'cliente' => 'required|exists:cliente,cedula',
             ];
             $validate = \validator($data, $rules);
