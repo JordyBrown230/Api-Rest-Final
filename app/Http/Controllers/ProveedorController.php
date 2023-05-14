@@ -58,7 +58,7 @@ class ProveedorController extends Controller
         $rules = [
             'idProveedor' => 'required|numeric',
             'nombreCompania' => 'required|alpha',
-            'numTelefono' => 'required|alpha_numeric',
+            'numTelefono' => 'required|alpha_num',
             'email' => 'required|email',
           
         ];
@@ -108,7 +108,7 @@ class ProveedorController extends Controller
             $rules = [
             'idProveedor' => 'required|numeric',
             'nombreCompania' => 'required|alpha',
-            'numTelefono' => 'required|alpha_numeric',
+            'numTelefono' => 'required|alpha_num',
             'email' => 'required|email',
 
             ];

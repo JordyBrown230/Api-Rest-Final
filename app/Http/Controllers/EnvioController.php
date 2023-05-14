@@ -60,7 +60,7 @@ class EnvioController extends Controller
             'direccion' => 'required|alpha_num',
             'fechaOrden' => 'required|date',
             'chofer'  => 'required|exists:chofer,idEmpleado',
-            'vehiculo'  => 'required|exists:vehiculo,idVehiculo',
+            'vehiculo'  => 'required|exists:vehiculo,numUnidad',
         ];
 
         $validate = \validator($data, $rules);
@@ -111,7 +111,7 @@ class EnvioController extends Controller
             'direccion' => 'required|alpha_num',
             'fechaOrden' => 'required|date',
             'chofer'  => 'required|exists:chofer,idEmpleado',
-            'vehiculo'  => 'required|exists:vehiculo,idVehiculo',
+            'vehiculo'  => 'required|exists:vehiculo,numUnidad',
 
             ];
     

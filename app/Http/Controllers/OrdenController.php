@@ -111,7 +111,6 @@ class OrdenController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'idOrden' => 'required|numeric',
                 'tipoRetiro' => 'required|alpha',
                 'fechaOrden' => 'required|date',
                 'total'=> 'required|numeric',
@@ -126,7 +125,6 @@ class OrdenController extends Controller
             if (!$validate->fails()) {
                     $orden = Orden::find($data['idOrden']);
                 if ($orden) {
-                    $orden->idOrden = $data['idOrden'];
                     $orden->tipoRetiro = $data['tipoRetiro'];
                     $orden->fechaOrden = $data['fechaOrden'];
                     $orden->total = $data['total'];

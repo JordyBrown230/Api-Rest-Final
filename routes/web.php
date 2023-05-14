@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PuestoController;
@@ -24,7 +25,7 @@ Route::prefix('api')->group(
        // Route::get('/category',[CategoryController::class,'index']);
        // Route::put('/empleados', 'EmpleadoController@update');
         Route::put('/empleado', [EmpleadoController::class, 'update']);
-        
+        Route::put('/usuario',[UsuarioController::class, 'update']);
        //RUTAS AUTOMÁTICAS Restful
         Route::resource('/puesto',PuestoController::class,['except'=>['create','edit']]);
         Route::resource('/empleado',EmpleadoController::class,['except'=>['create']]);
@@ -34,7 +35,7 @@ Route::prefix('api')->group(
         Route::post('/orden',[OrdenController::class,'store']);
         Route::delete('/categoria/{id}',[CategoriaController::class,'destroy']);
         Route::delete('/telefonocliente/{id}',[TelefonoClienteController::class,'destroy']);
-
+        Route::resource('/usuario', UsuarioController::class,['except'=>['create','edit']]);
     }
 );
 
