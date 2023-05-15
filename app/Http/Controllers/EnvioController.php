@@ -56,20 +56,16 @@ class EnvioController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'idEnvio' => 'required|numeric',
-            'direccion' => 'required|alpha_num',
-            'fechaOrden' => 'required|date',
-            'chofer'  => 'required|exists:chofer,idEmpleado',
-            'vehiculo'  => 'required|exists:vehiculo,numUnidad',
+            'direccion' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
+            'chofer'  => 'required|exists:empleado,idEmpleado',
+            'vehiculo'  => 'required|exists:vehiculo,numUnidad'
         ];
 
         $validate = \validator($data, $rules);
 
-        if (!$validate->fails()) {
+        if (!($validate->fails())) {
             $envio = new Envio();
-            $envio->idEnvio = $data['idEnvio'];
-            $envio->direccion = $data['direcion'];
-            $envio->fechaOrden= $data['fechaOrden'];
+            $envio->direccion = $data['direccion'];
             $envio->chofer = $data['chofer'];
             $envio->vehiculo= $data['vehiculo'];
             $envio->save();
@@ -107,22 +103,20 @@ class EnvioController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-            'idEnvio' => 'required|numeric',
-            'direccion' => 'required|alpha_num',
-            'fechaOrden' => 'required|date',
-            'chofer'  => 'required|exists:chofer,idEmpleado',
+            'idEnvio' => 'required|numeric|exists:envio,idEnvio',
+            'direccion' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
+            'chofer'  => 'required|exists:empleado,idEmpleado',
             'vehiculo'  => 'required|exists:vehiculo,numUnidad',
 
             ];
     
             $validate = \validator($data, $rules);
     
-            if (!$validate->fails()) {
-                    $envio = Envio::find($data['idEnvio']);
+            if (!($validate->fails())) {
+                $envio = Envio::find($data['idEnvio']);
                 if ($envio) {
                     $envio->idEnvio = $data['idEnvio'];
-                    $envio->direccion = $data['direcion'];
-                    $envio->fechaOrden= $data['fechaOrden'];
+                    $envio->direccion = $data['direccion'];
                     $envio->chofer = $data['chofer'];
                     $envio->vehiculo= $data['vehiculo'];
                     $envio->save();

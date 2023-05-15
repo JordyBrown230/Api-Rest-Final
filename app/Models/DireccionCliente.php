@@ -9,7 +9,7 @@ class DireccionCliente extends Model
 {
     use HasFactory;
 
-    protected $table='direccionescliente';
+    protected $table='direccioncliente';
     protected $primaryKey="idDireccionesCliente";
 
     protected $fillable=[

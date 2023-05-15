@@ -63,7 +63,7 @@ class TelefonoClienteController extends Controller
     
             $validate = \validator($data, $rules);
     
-            if (!$validate->fails()) {
+            if (!($validate->fails())) {
                 $telefonoCliente = new TelefonoCliente();
                 $telefonoCliente->numTelefono= $data['numTelefono'];
                 $telefonoCliente->cliente = $data['cliente'];
@@ -89,7 +89,7 @@ class TelefonoClienteController extends Controller
         return response()->json($response, $response['status']);
     } 
     
-    public function update(Request $request, $id){
+    public function update(Request $request){
         $data_input = $request->input('data', null);
         if (is_array($data_input)) {
             $data = $data_input;
@@ -99,13 +99,15 @@ class TelefonoClienteController extends Controller
         if (!empty($data)) {
             $data = array_map('trim', $data);
             $rules = [
+                'idTelefonosCliente'=>'required|exists:telefonocliente,idTelefonosCliente',
                 'numTelefono' => 'required|alpha_num',
                 'cliente' => 'required|exists:cliente,cedula',
             ];
             $validate = \validator($data, $rules);
-            if (!$validate->fails()) {
-                $telefonoCliente = TelefonoCliente::find($id);
+            if (!($validate->fails())) {
+                $telefonoCliente = TelefonoCliente::find($data['idTelefonosCliente']);
                 if ($telefonoCliente) {
+                    $telefonoCliente->idTelefonosCliente= $data['idTelefonosCliente'];
                     $telefonoCliente->numTelefono= $data['numTelefono'];
                     $telefonoCliente->cliente = $data['cliente'];
                     $telefonoCliente->save();

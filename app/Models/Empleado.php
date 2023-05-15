@@ -19,8 +19,7 @@ class Empleado extends Model
         'nombre',
         'fechaNac',
         'fechaIngreso',
-        'email',
-        'foto',
+        'email', 
         'puesto'
     ];
 

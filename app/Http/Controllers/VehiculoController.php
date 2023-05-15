@@ -56,19 +56,17 @@ class VehiculoController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'numUnidad' => 'required|numerIc',
             'placa' => 'required|alpha_num',
-            'color' => 'required|alpha_num',
-            'tipo' => 'required|alpha_num',
-            'modelo' => 'required|alpha_num',
+            'color' => 'required|alpha',
+            'tipo' => 'required|regex:/^[a-zA-Z\s]+$/u',
+            'modelo' => 'required|numeric',
             
         ];
 
         $validate = \validator($data, $rules);
 
-        if (!$validate->fails()) {
+        if (!($validate->fails())) {
             $vehiculo = new Vehiculo();
-            $vehiculo->numUnidad = $data['numUnidad'];
             $vehiculo->placa = $data['placa'];
             $vehiculo->color = $data['color'];
             $vehiculo->tipo = $data['tipo'];
@@ -108,17 +106,17 @@ class VehiculoController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'numUnidad' => 'required|numeric',
-                'placa' => 'required|alpha_num',
-                'color' => 'required|alpha_num',
-                'tipo' => 'required|alpha_num',
-                'modelo' => 'required|alpha_num',
+                'numUnidad' => 'required|numeric|exists:vehiculo,numUnidad',
+                'placa' => 'required|alpha_num|unique:vehiculo,placa',
+                'color' => 'required|alpha',
+                'tipo' => 'required|regex:/^[a-zA-Z\s]+$/u',
+                'modelo' => 'required|numeric',
             ];
     
             $validate = \validator($data, $rules);
     
-            if (!$validate->fails()) {
-                    $vehiculo = Vehiculo::find($data['idvehiculo']);
+            if (!($validate->fails())) {
+                    $vehiculo = Vehiculo::find($data['numUnidad']);
                 if ($vehiculo) {
                     $vehiculo->numUnidad = $data['numUnidad'];
                     $vehiculo->placa = $data['placa'];
