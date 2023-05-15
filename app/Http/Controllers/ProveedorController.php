@@ -57,15 +57,15 @@ class ProveedorController extends Controller
 
         $rules = [
             'idProveedor' => 'required|numeric',
-            'nombreCompania' => 'required|alpha',
-            'numTelefono' => 'required|alpha_num',
+            'nombreCompania' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u|unique:proveedor,nombreCompania',
+            'numTelefono' => 'required|regex:/^(?:\+?\d{1,3}\s?)?(?:\d{2,4}\s?)?\d{1,14}$/|unique:proveedor,numTelefono',
             'email' => 'required|email',
           
         ];
 
         $validate = \validator($data, $rules);
 
-        if (!$validate->fails()) {
+        if (!($validate->fails())) {
             $proveedor = new Proveedor();
             $proveedor->idProveedor = $data['idProveedor'];
             $proveedor->nombreCompania = $data['nombreCompania'];
@@ -107,15 +107,15 @@ class ProveedorController extends Controller
     
             $rules = [
             'idProveedor' => 'required|numeric',
-            'nombreCompania' => 'required|alpha',
-            'numTelefono' => 'required|alpha_num',
+            'nombreCompania' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
+            'numTelefono' => 'required|regex:/^(?:\+?\d{1,3}\s?)?(?:\d{2,4}\s?)?\d{1,14}$/',
             'email' => 'required|email',
 
             ];
     
             $validate = \validator($data, $rules);
     
-            if (!$validate->fails()) {
+            if (!($validate->fails())) {
                     $proveedor = Proveedor::find($data['idProveedor']);
                 if ($proveedor) {
                     $proveedor->idProveedor = $data['idProveedor'];

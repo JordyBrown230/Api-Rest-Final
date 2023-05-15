@@ -62,6 +62,7 @@ class OrdenController extends Controller
             'ivaTotal' => 'required|numeric',
             'cliente'  => 'required|exists:cliente,cedula',
             'empleado'  => 'required|exists:empleado,idEmpleado',
+            'envio'  => 'nullable|exists:envio,idEvio',
         ];
 
         $validate = \validator($data, $rules);
@@ -74,6 +75,7 @@ class OrdenController extends Controller
             $orden->ivaTotal = $data['ivaTotal'];
             $orden->cliente = $data['cliente'];
             $orden->empleado= $data['empleado'];
+            $orden->envio = empty($data['envio']) ? null : $data['envio'];
             $orden->save();
 
             $response = [
@@ -116,6 +118,7 @@ class OrdenController extends Controller
                 'ivaTotal' => 'required|numeric',
                 'cliente'  => 'required|exists:cliente,cedula',
                 'empleado'  => 'required|exists:empleado,idEmpleado',
+                'envio'  => 'nullable|exists:envio,idEvio',
             ];
     
             $validate = \validator($data, $rules);
@@ -130,6 +133,7 @@ class OrdenController extends Controller
                     $orden->ivaTotal = $data['ivaTotal'];
                     $orden->cliente = $data['cliente'];
                     $orden->empleado= $data['empleado'];
+                    $orden->envio = empty($data['envio']) ? null : $data['envio'];
                     $orden->save();
 
                     $response = [

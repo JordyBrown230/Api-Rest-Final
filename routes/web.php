@@ -12,6 +12,9 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\EnvioController;
 use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\DireccionClienteController;
+use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\DetalleOrdenController;
+use App\Http\Controllers\ClienteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +47,19 @@ Route::prefix('api')->group(
 
         Route::put('/direccioncliente',[DireccionClienteController::class,'update']);
 
+        Route::put('/puesto',[PuestoController::class,'update']);
+
+        Route::put('/proveedor',[ProveedorController::class,'update']);
+
+        Route::put('/detalleorden',[DetalleOrdenController::class,'update']);
+
+        Route::put('/cliente',[ClienteController::class,'update']);
+
+        Route::post('/usuario/login',[UsuarioController::class,'login']);
+
+        Route::get('/usuario/getidentity',[UsuarioController::class,'getIdentity']);
+
+
 
 
        //RUTAS AUTOMÁTICAS Restful
@@ -66,6 +82,15 @@ Route::prefix('api')->group(
         Route::resource('/vehiculo',VehiculoController::class,['except'=>['create','edit','update']]);
 
         Route::resource('/direccioncliente',DireccionClienteController::class,['except'=>['create','edit','update']]);
+
+        Route::resource('/puesto',PuestoController::class,['except'=>['create','edit','update']]);
+
+        Route::resource('/proveedor',ProveedorController::class,['except'=>['create','edit','update']]);
+
+        Route::resource('/detalleorden',DetalleOrdenController::class,['except'=>['create','edit','update']]);
+
+        Route::resource('/cliente',ClienteController::class,['except'=>['create','edit','update']]);
+
     }
 );
 

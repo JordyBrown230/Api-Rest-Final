@@ -45,20 +45,20 @@ class UsuarioController extends Controller
         $data = json_decode($dataInput,true);
         $data =array_map('trim',$data);
         $rules = [
-            'nombreUsuario' => 'required|alpha',
+            'nombreUsuario' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u|unique:usuario,nombreUsuario',
             'password' => 'required',
             'tipoUsuario' =>  'required',
-            'cliente' => 'required',
-            'empleado' => 'required'
+            'cliente' => 'nullable|exists:cliente,cedula',
+            'empleado' => 'nullable|exists:empleado,idEmpleado'
         ];
         $valid = \validator($data,$rules);
-        if(!$valid->fails()){
+        if(!($valid->fails())){
             $user = new Usuario();
             $user->nombreUsuario = $data['nombreUsuario'];
-            $user->cliente = $data['cliente'];
-            $user->empleado = $data['empleado'];
             $user->password = hash('sha256',$data['password']);   
             $user->tipoUsuario = $data['tipoUsuario'];
+            $user->cliente = empty($data['cliente']) ? null : $data['cliente'];
+            $user->empleado = empty($data['empleado']) ? null : $data['empleado'];
             $user->save();
             $response = array(
                 'status' =>200,
@@ -81,21 +81,23 @@ class UsuarioController extends Controller
         if(!empty($data)){
             $data =array_map('trim',$data);
             $rules = [
-                'nombreUsuario' => 'required|alpha',
+                'idUsuario' => 'required|alpha|exists:usuario,idUsuario',
+                'nombreUsuario' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
                 'password' => 'required',
                 'tipoUsuario' =>  'required',
-                'cliente' => 'required',
-                'empleado' => 'required'
+                'cliente' => 'nullable|exists:cliente,cedula',
+                'empleado' => 'nullable|exists:empleado,idEmpleado'
             ];
             $valid = \validator($data,$rules);
-                if(!$valid->fails()){
+                if(!($valid->fails())){
                     $user= Usuario::find($data['idUsuario']);
                     if ($user) {
+                        $user->idUsuario = $data['idUsuario'];
                         $user->nombreUsuario = $data['nombreUsuario'];
-                        $user->cliente = $data['cliente'];
-                        $user->empleado = $data['empleado'];
                         $user->password = hash('sha256',$data['password']);   
                         $user->tipoUsuario = $data['tipoUsuario'];
+                        $user->cliente = empty($data['cliente']) ? null : $data['cliente'];
+                        $user->empleado = empty($data['empleado']) ? null : $data['empleado'];
                         $user->save();
                         $response = [
                             'status' => 200,

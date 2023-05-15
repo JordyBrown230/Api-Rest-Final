@@ -57,7 +57,7 @@ class TelefonoClienteController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'numTelefono' => 'required|alpha_num',
+                'numTelefono' => 'required|unique:telefonocliente,numTelefono|regex:/^(?:\+?\d{1,3}\s?)?(?:\d{2,4}\s?)?\d{1,14}$/',
                 'cliente' => 'required|exists:cliente,cedula',
             ];
     
@@ -100,7 +100,7 @@ class TelefonoClienteController extends Controller
             $data = array_map('trim', $data);
             $rules = [
                 'idTelefonosCliente'=>'required|exists:telefonocliente,idTelefonosCliente',
-                'numTelefono' => 'required|alpha_num',
+                'numTelefono' => 'required|regex:/^(?:\+?\d{1,3}\s?)?(?:\d{2,4}\s?)?\d{1,14}$/',
                 'cliente' => 'required|exists:cliente,cedula',
             ];
             $validate = \validator($data, $rules);
