@@ -14,7 +14,6 @@ class Vehiculo extends Model
     protected $primaryKey ='numUnidad';
 
     protected $fillable=[
-        'numUnidad',
         'placa',
         'color',
         'tipo',

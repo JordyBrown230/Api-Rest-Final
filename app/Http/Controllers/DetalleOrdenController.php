@@ -31,13 +31,13 @@ class DetalleOrdenController extends Controller
         if($detalleOrden) {
             $response = array(
                 'status' => 200,
-                'message' => 'DetalleOrden encontrado',
+                'message' => 'Detalle orden encontrado',
                 'data' => $detalleOrden
             );
         } else {
             $response = array(
                 'status' => 404,
-                'message' => 'DetalleOrden no encontrado'
+                'message' => 'Detalle orden no encontrado'
             );
         }
         return response()->json($response, $response['status']);
@@ -60,12 +60,11 @@ class DetalleOrdenController extends Controller
             'precioUnitario' => 'required|numeric',
             'ivaUnitario'=> 'required|numeric',
             'orden' => 'required|exists:orden,idOrden',
-
         ];
 
         $validate = \validator($data, $rules);
 
-        if (!$validate->fails()) {
+        if (!($validate->fails())) {
             $detalleOrden = new DetalleOrden();
             $detalleOrden->cantidad = $data['cantidad'];
             $detalleOrden->precioUnitario = $data['precioUnitario'];
@@ -106,6 +105,7 @@ class DetalleOrdenController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
+                'idDetalleOrden' => 'required|numeric|exists:detalleorden,idDetalleOrden',
                 'cantidad' => 'required|numeric',
                 'precioUnitario' => 'required|numeric',
                 'ivaUnitario'=> 'required|numeric',
@@ -114,9 +114,10 @@ class DetalleOrdenController extends Controller
     
             $validate = \validator($data, $rules);
     
-            if (!$validate->fails()) {
+            if (!($validate->fails())) {
                     $detalleOrden = DetalleOrden::find($data['idDetalleOrden']);
                 if ($detalleOrden) {
+                    $detalleOrden->idDetalleOrden = $data['idDetalleOrden'];
                     $detalleOrden->cantidad = $data['cantidad'];
                     $detalleOrden->precioUnitario = $data['precioUnitario'];
                     $detalleOrden->ivaUnitario = $data['ivaUnitario'];

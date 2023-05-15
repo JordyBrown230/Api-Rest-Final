@@ -56,26 +56,26 @@ class OrdenController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'tipoRetiro' => 'required|alpha',
+            'tipoRetiro' => 'required|regex:/^[a-zA-Z\s]+$/u',
             'fechaOrden' => 'required|date',
             'total'=> 'required|numeric',
             'ivaTotal' => 'required|numeric',
-            'envio' => 'required|exists:envio,idEnvio',
             'cliente'  => 'required|exists:cliente,cedula',
             'empleado'  => 'required|exists:empleado,idEmpleado',
+            'envio'  => 'nullable|exists:envio,idEvio',
         ];
 
         $validate = \validator($data, $rules);
 
-        if (!$validate->fails()) {
+        if (!($validate->fails())) {
             $orden = new Orden();
             $orden->tipoRetiro = $data['tipoRetiro'];
             $orden->fechaOrden = $data['fechaOrden'];
             $orden->total = $data['total'];
             $orden->ivaTotal = $data['ivaTotal'];
-            $orden->envio = $data['envio'];
             $orden->cliente = $data['cliente'];
             $orden->empleado= $data['empleado'];
+            $orden->envio = empty($data['envio']) ? null : $data['envio'];
             $orden->save();
 
             $response = [
@@ -111,27 +111,29 @@ class OrdenController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'tipoRetiro' => 'required|alpha',
+                'idOrden' => 'required|exists:orden,idOrden',
+                'tipoRetiro' => 'required|regex:/^[a-zA-Z\s]+$/u',
                 'fechaOrden' => 'required|date',
                 'total'=> 'required|numeric',
                 'ivaTotal' => 'required|numeric',
-                'envio' => 'required|exists:envio,idEnvio',
                 'cliente'  => 'required|exists:cliente,cedula',
                 'empleado'  => 'required|exists:empleado,idEmpleado',
+                'envio'  => 'nullable|exists:envio,idEvio',
             ];
     
             $validate = \validator($data, $rules);
     
-            if (!$validate->fails()) {
+            if (!($validate->fails())) {
                     $orden = Orden::find($data['idOrden']);
                 if ($orden) {
+                    $orden->idOrden = $data['idOrden'];
                     $orden->tipoRetiro = $data['tipoRetiro'];
                     $orden->fechaOrden = $data['fechaOrden'];
                     $orden->total = $data['total'];
                     $orden->ivaTotal = $data['ivaTotal'];
-                    $orden->envio = $data['envio'];
                     $orden->cliente = $data['cliente'];
                     $orden->empleado= $data['empleado'];
+                    $orden->envio = empty($data['envio']) ? null : $data['envio'];
                     $orden->save();
 
                     $response = [

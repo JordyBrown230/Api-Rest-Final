@@ -56,16 +56,16 @@ class ClienteController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'cedula' => 'required|alpha_num',
-            'nombre' => 'required|alpha',
+            'cedula' => 'required|alpha_num|min:8',
+            'nombre' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
             'fechaNac' => 'required|date',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:cliente,email',
 
         ];
 
         $validate = \validator($data, $rules);
 
-        if (!$validate->fails()) {
+        if (!($validate->fails())) {
             $cliente = new Cliente();
             $cliente->cedula = $data['cedula'];
             $cliente->nombre = $data['nombre'];
@@ -106,16 +106,16 @@ class ClienteController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'cedula' => 'required|alpha_num',
-                'nombre' => 'required|alpha',
+                'cedula' => 'required|alpha_num|min:8|exists:cliente,cedula',
+                'nombre' => 'required|alpha|regex:/^[a-zA-Z0-9\s.,]+$/u',
                 'fechaNac' => 'required|date',
                 'email' => 'required|email',
             ];
     
             $validate = \validator($data, $rules);
     
-            if (!$validate->fails()) {
-                    $cliente = Cliente::find($data['cedula']);
+            if (!($validate->fails())) {
+                $cliente = Cliente::find($data['cedula']);
                 if ($cliente) {
                     $cliente->cedula = $data['cedula'];
                     $cliente->nombre = $data['nombre'];

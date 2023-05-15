@@ -58,27 +58,23 @@ class EmpleadoController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'idEmpleado' => 'required|numeric',
             'cedula' => 'required|alpha_num',
-            'nombre' => 'required|alpha',
+            'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u',
             'fechaNac' => 'required|date',
             'fechaIngreso' => 'required|date',
-            'email' => 'required|email',
-            'foto' => 'nullable|image',
+            'email' => 'required|email|unique:empleado,email',
             'puesto' => 'required|exists:puesto,idPuesto',
         ];
 
         $validate = \validator($data, $rules);
 
-        if (!$validate->fails()) {
+        if (!($validate->fails())) {
             $empleado = new Empleado();
-            $empleado->idEmpleado = $data['idEmpleado'];
             $empleado->cedula = $data['cedula'];
             $empleado->nombre = $data['nombre'];
             $empleado->fechaNac = $data['fechaNac'];
             $empleado->fechaIngreso = $data['fechaIngreso'];
             $empleado->email = $data['email'];
-            $empleado->foto = $data['foto'];
             $empleado->puesto = $data['puesto'];
             $empleado->save();
 
@@ -115,19 +111,18 @@ class EmpleadoController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'idEmpleado' => 'required|numeric',
+                'idEmpleado' => 'required|numeric|exists:empleado,idEmpleado',
                 'cedula' => 'required|alpha_num',
-                'nombre' => 'required|alpha',
+                'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u',
                 'fechaNac' => 'required|date',
                 'fechaIngreso' => 'required|date',
                 'email' => 'required|email',
-                'foto' => 'nullable|image',
                 'puesto' => 'required|exists:puesto,idPuesto',
             ];
     
             $validate = \validator($data, $rules);
     
-            if (!$validate->fails()) {
+            if (!($validate->fails())) {
                     $empleado = Empleado::find($data['idEmpleado']);
                 if ($empleado) {
                     $empleado->idEmpleado = $data['idEmpleado'];
@@ -136,7 +131,6 @@ class EmpleadoController extends Controller
                     $empleado->fechaNac = $data['fechaNac'];
                     $empleado->fechaIngreso = $data['fechaIngreso'];
                     $empleado->email = $data['email'];
-                    $empleado->foto = $data['foto'];
                     $empleado->puesto = $data['puesto'];
                     $empleado->save();
     

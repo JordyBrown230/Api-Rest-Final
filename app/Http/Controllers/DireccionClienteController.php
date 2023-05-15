@@ -57,13 +57,13 @@ class DireccionClienteController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'direccion' => 'required|alpha',
+                'direccion' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
                 'cliente' => 'required|exists:cliente,cedula',
             ];
     
             $validate = \validator($data, $rules);
     
-            if (!$validate->fails()) {
+            if (!($validate->fails())) {
                 $direccionCliente = new DireccionCliente();
                 $direccionCliente->direccion= $data['direccion'];
                 $direccionCliente->cliente = $data['cliente'];
@@ -89,7 +89,7 @@ class DireccionClienteController extends Controller
         return response()->json($response, $response['status']);
     } 
     
-    public function update(Request $request, $id){
+    public function update(Request $request){
         $data_input = $request->input('data', null);
         if (is_array($data_input)) {
             $data = $data_input;
@@ -99,13 +99,15 @@ class DireccionClienteController extends Controller
         if (!empty($data)) {
             $data = array_map('trim', $data);
             $rules = [
-                'direccion' => 'required|alpha',
+                'idDireccionesCliente' => 'required|exists:direccioncliente,idDireccionesCliente',
+                'direccion' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
                 'cliente' => 'required|exists:cliente,cedula',
             ];
             $validate = \validator($data, $rules);
-            if (!$validate->fails()) {
-                $direccionCliente = DireccionCliente::find($id);
+            if (!($validate->fails())) {
+                $direccionCliente = DireccionCliente::find($data['idDireccionesCliente']);
                 if ($direccionCliente) {
+                    $direccionCliente->idDireccionesCliente= $data['idDireccionesCliente'];
                     $direccionCliente->direccion= $data['direccion'];
                     $direccionCliente->cliente = $data['cliente'];
                     $direccionCliente->save();

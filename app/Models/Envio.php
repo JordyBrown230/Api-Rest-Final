@@ -15,7 +15,6 @@ class Envio extends Model
 
     
     protected $fillable=[
-        'idEnvio',
         'direccion',
         'fechaOrden',
         'chofer',

@@ -56,29 +56,28 @@ class ProductoController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'idProducto' => 'required|numeric',
-            'nombre' => 'required|alpha',
+            'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u',
             'precioUnitario' => 'required|numeric',
             'stock'=> 'required|numeric',
             'foto' => 'nullable|image',
             'proveedor' => 'required|exists:proveedor,idProveedor',
             'categoria'  => 'required|exists:categoria,idCategoria',
-            'detalleOrden'  => 'required|exists:detalleOrden,idDetalleOrden',
+            'detalleOrden'  => 'nullable'
         ];
 
         $validate = \validator($data, $rules);
 
-        if (!$validate->fails()) {
-            $producto = new Producto();
-            $producto->idProducto = $data['idProducto'];
-            $producto->nombre = $data['nombre'];
-            $producto->precioUnitario = $data['precioUnitario'];
-            $producto->stock = $data['stock'];
-            $producto->foto = $data['foto'];
-            $producto->proveedor = $data['proveedor'];
-            $producto->categoria = $data['categoria'];
-            $producto->detalleOrden = $data['detalleOrden'];
-            $producto->save();
+        if (!($validate->fails())) {
+            // ...
+        $producto = new Producto();
+        $producto->nombre = $data['nombre'];
+        $producto->precioUnitario = $data['precioUnitario'];
+        $producto->stock = $data['stock'];
+        $producto->foto = empty($data['foto']) ? null : $data['foto'];
+        $producto->proveedor = $data['proveedor'];
+        $producto->categoria = $data['categoria'];
+        $producto->detalleOrden = empty($data['detalleOrden']) ? null : $data['detalleOrden'];
+        $producto->save();
 
             $response = [
                 'status' => 201,
@@ -113,29 +112,29 @@ class ProductoController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'idProducto' => 'required|numeric',
-                'nombre' => 'required|alpha',
+                'idProducto' => 'required|numeric|exists:producto,idProducto',
+                'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u',
                 'precioUnitario' => 'required|numeric',
                 'stock'=> 'required|numeric',
                 'foto' => 'nullable|image',
                 'proveedor' => 'required|exists:proveedor,idProveedor',
                 'categoria'  => 'required|exists:categoria,idCategoria',
-                'detalleOrden'  => 'required|exists:detalleOrden,idDetalleOrden',
+                'detalleOrden'  => 'nullable|exists:detalleOrden,idDetalleOrden',
             ];
     
             $validate = \validator($data, $rules);
     
-            if (!$validate->fails()) {
+            if (!($validate->fails())) {
                     $producto = Producto::find($data['idProducto']);
                 if ($producto) {
                     $producto->idProducto = $data['idProducto'];
                     $producto->nombre = $data['nombre'];
                     $producto->precioUnitario = $data['precioUnitario'];
                     $producto->stock = $data['stock'];
-                    $producto->foto = $data['foto'];
+                    $producto->foto = empty($data['foto']) ? null : $data['foto'];
                     $producto->proveedor = $data['proveedor'];
                     $producto->categoria = $data['categoria'];
-                    $producto->detalleOrden = $data['detalleOrden'];
+                    $producto->detalleOrden = empty($data['detalleOrden']) ? null : $data['detalleOrden'];
                     $producto->save();
 
                     $response = [

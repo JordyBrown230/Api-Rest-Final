@@ -12,7 +12,6 @@ class Usuario extends Model
    
     protected $table='usuario';
     protected $primaryKey="idUsuario";
-    
     protected $fillable = [
         'nombreUsuario',
         'password',
@@ -20,6 +19,7 @@ class Usuario extends Model
         'cliente',
         'empleado'
     ];
+
   
     protected $hidden = [
         'password',

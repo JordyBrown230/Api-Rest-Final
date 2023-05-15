@@ -12,7 +12,9 @@ class TelefonoCliente extends Model
     protected $table='telefonocliente';
     protected $primaryKey = 'idTelefonosCliente';
     protected $fillable=[
-        'numTelefono','cliente'];
+        'numTelefono',
+        'cliente'
+    ];
     public function cliente(){
         return $this->belongsTo('App\Models\Cliente','cliente');
     }
