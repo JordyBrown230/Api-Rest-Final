@@ -63,7 +63,7 @@ class DireccionClienteController extends Controller
     
             $validate = \validator($data, $rules);
     
-            if (!$validate->fails()) {
+            if (!($validate->fails())) {
                 $direccionCliente = new DireccionCliente();
                 $direccionCliente->direccion= $data['direccion'];
                 $direccionCliente->cliente = $data['cliente'];
@@ -104,7 +104,7 @@ class DireccionClienteController extends Controller
                 'cliente' => 'required|exists:cliente,cedula',
             ];
             $validate = \validator($data, $rules);
-            if (!$validate->fails()) {
+            if (!($validate->fails())) {
                 $direccionCliente = DireccionCliente::find($data['idDireccionesCliente']);
                 if ($direccionCliente) {
                     $direccionCliente->idDireccionesCliente= $data['idDireccionesCliente'];
