@@ -60,6 +60,15 @@ Route::prefix('api')->group(
         Route::get('/usuario/getidentity',[UsuarioController::class,'getIdentity']);
 
 
+        //RUTAS MÉTODOS ESPECIALIZADOS
+
+        Route::get('/cliente/nombre/{nombre}',[ClienteController::class,'getByName']);
+
+        Route::get('/orden/cliente/{id}',[OrdenController::class,'getByClient']);
+
+        Route::get('/empleado/puesto/{nombre}',[EmpleadoController::class,'getByJob']);
+
+
 
 
        //RUTAS AUTOMÁTICAS Restful
@@ -89,7 +98,7 @@ Route::prefix('api')->group(
 
         Route::resource('/detalleorden',DetalleOrdenController::class,['except'=>['create','edit','update']]);
 
-        Route::resource('/cliente',ClienteController::class,['except'=>['create','edit','update']]);
+       Route::resource('/cliente',ClienteController::class,['except'=>['create','edit','update']]);
 
     }
 );

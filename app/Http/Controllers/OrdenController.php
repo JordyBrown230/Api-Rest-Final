@@ -179,4 +179,24 @@ class OrdenController extends Controller
         }
         return response()->json($response, $response['status']);
     }
+
+    public function getByClient($cliente_id){
+
+        $orden = Orden::porCliente($cliente_id)->get();
+
+        if($orden->count() > 0) {
+            $response = array(
+                'status' => 200,
+                'message' => 'Orden encontrado',
+                'data' => $orden
+            );
+        } else {
+            $response = array(
+                'status' => 404,
+                'message' => 'Orden no encontrado'
+            );
+        }
+        return response()->json($response, $response['status']);
+
+    }
 }

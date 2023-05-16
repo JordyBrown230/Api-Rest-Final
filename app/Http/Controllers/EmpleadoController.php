@@ -177,4 +177,24 @@ class EmpleadoController extends Controller
         }
         return response()->json($response, $response['status']);
     }
-}
+
+    public function getByJob($nombrePuesto){
+
+        $empleado = Empleado::porPuesto($nombrePuesto)->get();
+        if ($empleado->count() > 0) {
+            $response = array(
+                'status' => 200,
+                'message' => 'Empleado encontrado',
+                'data' => $empleado
+            );
+        } else {
+            $response = array(
+                'status' => 404,
+                'message' => 'Empleado no encontrado'
+            ); 
+        }
+        return response()->json($response, $response['status']);
+
+        }
+    }
+

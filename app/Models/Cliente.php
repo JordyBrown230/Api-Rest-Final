@@ -20,6 +20,10 @@ class Cliente extends Model
         'email'
     ];
 
+    public function scopePorNombre($query,$nombre){
+        return $query->where('nombre', 'LIKE', $nombre. '%');
+    }
+
     public function telefonos(){
         return $this->hasMany('App\Models\TelefonoCliente');
     }
