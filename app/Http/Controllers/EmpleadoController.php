@@ -48,9 +48,9 @@ class EmpleadoController extends Controller
     public function store(Request $request){
     $data_input = $request->input('data', null);
 
-    if (is_array($data_input)) {
+     if (is_array($data_input)) {
         $data = $data_input;
-    } else {
+     } else {
         $data = json_decode($data_input, true);
     }
 
@@ -58,7 +58,7 @@ class EmpleadoController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'cedula' => 'required|alpha_num',
+            'cedula' => 'required|alpha_num|min:8|unique:empleado,cedula',
             'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u',
             'fechaNac' => 'required|date',
             'fechaIngreso' => 'required|date',
@@ -98,7 +98,7 @@ class EmpleadoController extends Controller
     return response()->json($response, $response['status']);
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $id){
         $data_input = $request->input('data', null);
 
         if (is_array($data_input)) {
@@ -111,21 +111,19 @@ class EmpleadoController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'idEmpleado' => 'required|numeric|exists:empleado,idEmpleado',
-                'cedula' => 'required|alpha_num',
+                'cedula' => 'required|alpha_num|unique:empleado,cedula,'.$id.',idEmpleado',
                 'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u',
                 'fechaNac' => 'required|date',
                 'fechaIngreso' => 'required|date',
-                'email' => 'required|email',
+                'email' => 'required|email|unique:empleado,email,'.$id.',idEmpleado',
                 'puesto' => 'required|exists:puesto,idPuesto',
             ];
     
             $validate = \validator($data, $rules);
     
             if (!($validate->fails())) {
-                    $empleado = Empleado::find($data['idEmpleado']);
+                    $empleado = Empleado::find($id);
                 if ($empleado) {
-                    $empleado->idEmpleado = $data['idEmpleado'];
                     $empleado->cedula = $data['cedula'];
                     $empleado->nombre = $data['nombre'];
                     $empleado->fechaNac = $data['fechaNac'];

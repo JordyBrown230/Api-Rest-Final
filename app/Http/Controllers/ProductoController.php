@@ -56,7 +56,7 @@ class ProductoController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u',
+            'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u|unique:producto,nombre',
             'precioUnitario' => 'required|numeric',
             'stock'=> 'required|numeric',
             'foto' => 'nullable|image',
@@ -99,7 +99,7 @@ class ProductoController extends Controller
     return response()->json($response, $response['status']);
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $id){
         $data_input = $request->input('data', null);
 
         if (is_array($data_input)) {
@@ -112,8 +112,7 @@ class ProductoController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'idProducto' => 'required|numeric|exists:producto,idProducto',
-                'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u',
+                'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u|unique:producto,nombre,'.$id.',idProducto',
                 'precioUnitario' => 'required|numeric',
                 'stock'=> 'required|numeric',
                 'foto' => 'nullable|image',
@@ -125,9 +124,8 @@ class ProductoController extends Controller
             $validate = \validator($data, $rules);
     
             if (!($validate->fails())) {
-                    $producto = Producto::find($data['idProducto']);
+                    $producto = Producto::find($id);
                 if ($producto) {
-                    $producto->idProducto = $data['idProducto'];
                     $producto->nombre = $data['nombre'];
                     $producto->precioUnitario = $data['precioUnitario'];
                     $producto->stock = $data['stock'];

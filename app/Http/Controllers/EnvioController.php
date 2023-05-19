@@ -57,8 +57,8 @@ class EnvioController extends Controller
 
         $rules = [
             'direccion' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
-            'chofer'  => 'required|exists:empleado,idEmpleado',
-            'vehiculo'  => 'required|exists:vehiculo,numUnidad'
+            'chofer'  => 'required|exists:empleado,idEmpleado',//esto se debe cambiar, el chofer deberia asignarse a un vehiculo
+            'vehiculo'  => 'required|exists:vehiculo,numUnidad|unique:envio,vehiculo'
         ];
 
         $validate = \validator($data, $rules);
@@ -90,7 +90,7 @@ class EnvioController extends Controller
     return response()->json($response, $response['status']);
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $id){
         $data_input = $request->input('data', null);
 
         if (is_array($data_input)) {
@@ -103,19 +103,16 @@ class EnvioController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-            'idEnvio' => 'required|numeric|exists:envio,idEnvio',
             'direccion' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
-            'chofer'  => 'required|exists:empleado,idEmpleado',
-            'vehiculo'  => 'required|exists:vehiculo,numUnidad',
-
+            'chofer'  => 'required|exists:empleado,idEmpleado',//esto se debe cambiar, el chofer deberia asignarse a un vehiculo
+            'vehiculo'  => 'required|exists:vehiculo,numUnidad'
             ];
     
             $validate = \validator($data, $rules);
     
             if (!($validate->fails())) {
-                $envio = Envio::find($data['idEnvio']);
+                $envio = Envio::find($id);
                 if ($envio) {
-                    $envio->idEnvio = $data['idEnvio'];
                     $envio->direccion = $data['direccion'];
                     $envio->chofer = $data['chofer'];
                     $envio->vehiculo= $data['vehiculo'];

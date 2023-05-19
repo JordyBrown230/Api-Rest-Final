@@ -62,7 +62,7 @@ class OrdenController extends Controller
             'ivaTotal' => 'required|numeric',
             'cliente'  => 'required|exists:cliente,cedula',
             'empleado'  => 'required|exists:empleado,idEmpleado',
-            'envio'  => 'nullable|exists:envio,idEvio',
+            'envio'  => 'nullable|exists:envio,idEnvio',
         ];
 
         $validate = \validator($data, $rules);
@@ -98,7 +98,7 @@ class OrdenController extends Controller
     return response()->json($response, $response['status']);
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $id){
         $data_input = $request->input('data', null);
 
         if (is_array($data_input)) {
@@ -111,22 +111,20 @@ class OrdenController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'idOrden' => 'required|exists:orden,idOrden',
                 'tipoRetiro' => 'required|regex:/^[a-zA-Z\s]+$/u',
                 'fechaOrden' => 'required|date',
                 'total'=> 'required|numeric',
                 'ivaTotal' => 'required|numeric',
                 'cliente'  => 'required|exists:cliente,cedula',
                 'empleado'  => 'required|exists:empleado,idEmpleado',
-                'envio'  => 'nullable|exists:envio,idEvio',
+                'envio'  => 'nullable|exists:envio,idEnvio',
             ];
     
             $validate = \validator($data, $rules);
     
             if (!($validate->fails())) {
-                    $orden = Orden::find($data['idOrden']);
+                    $orden = Orden::find($id);
                 if ($orden) {
-                    $orden->idOrden = $data['idOrden'];
                     $orden->tipoRetiro = $data['tipoRetiro'];
                     $orden->fechaOrden = $data['fechaOrden'];
                     $orden->total = $data['total'];

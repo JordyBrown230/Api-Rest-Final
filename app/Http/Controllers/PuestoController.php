@@ -58,7 +58,7 @@ class PuestoController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'nombre' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
+                'nombre' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u|unique:puesto,nombre',
                 'salario' => 'required|numeric',
             ];
     
@@ -90,7 +90,7 @@ class PuestoController extends Controller
         return response()->json($response, $response['status']);
     } 
     
-    public function update(Request $request){
+    public function update(Request $request, $id){
         $data_input = $request->input('data', null);
         if (is_array($data_input)) {
             $data = $data_input;
@@ -100,15 +100,13 @@ class PuestoController extends Controller
         if (!empty($data)) {
             $data = array_map('trim', $data);
             $rules = [
-                'idPuesto' => 'required|exists:puesto,idPuesto',
-                'nombre' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
+                'nombre' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u|unique:puesto,nombre,'.$id.',idPuesto',
                 'salario' => 'required|numeric',
             ];
             $validate = \validator($data, $rules);
             if (!($validate->fails())) {
-                $puesto = Puesto::find($data['idPuesto']);
+                $puesto = Puesto::find($id);
                 if ($puesto) {
-                    $puesto->idPuesto = $data['idPuesto'];
                     $puesto->nombre = $data['nombre'];
                     $puesto->salario = $data['salario'];
                     $puesto->save();

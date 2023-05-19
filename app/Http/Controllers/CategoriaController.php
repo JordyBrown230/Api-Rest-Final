@@ -84,7 +84,7 @@ class CategoriaController extends Controller
         return response()->json($response, $response['status']);
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $id){
         $data_input = $request->input('data', null);
 
         if (is_array($data_input)) {
@@ -97,16 +97,14 @@ class CategoriaController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'idCategoria' => 'required|numeric|exists:categoria,idCategoria',
-                'nombre' => 'required|alpha',
-                'descripcion' => 'required|alpha'
+                'nombre' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u|unique:categoria,nombre,'.$id.',idCategoria',
+                'descripcion' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u'
             ];
             $validate = \validator($data, $rules);
             
             if (!($validate->fails())) {
-                $categoria = Categoria::find($data['idCategoria']);
+                $categoria = Categoria::find($id);
                 if ($categoria) {
-                    $categoria->idCategoria = $data['idCategoria'];
                     $categoria->nombre = $data['nombre'];
                     $categoria->descripcion = $data['descripcion'];
                     $categoria->save();

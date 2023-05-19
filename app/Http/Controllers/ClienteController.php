@@ -56,7 +56,7 @@ class ClienteController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'cedula' => 'required|alpha_num|min:8',
+            'cedula' => 'required|alpha_num|min:8|unique:cliente,cedula',
             'nombre' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
             'fechaNac' => 'required|date',
             'email' => 'required|email|unique:cliente,email',
@@ -93,7 +93,7 @@ class ClienteController extends Controller
     return response()->json($response, $response['status']);
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $id){
         $data_input = $request->input('data', null);
 
         if (is_array($data_input)) {
@@ -106,18 +106,16 @@ class ClienteController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'cedula' => 'required|alpha_num|min:8|exists:cliente,cedula',
-                'nombre' => 'required|alpha|regex:/^[a-zA-Z0-9\s.,]+$/u',
+                'nombre' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
                 'fechaNac' => 'required|date',
-                'email' => 'required|email',
+                'email' => 'required|email|unique:cliente,email,'.$id.',cedula',
             ];
     
             $validate = \validator($data, $rules);
     
             if (!($validate->fails())) {
-                $cliente = Cliente::find($data['cedula']);
+                $cliente = Cliente::find($id);
                 if ($cliente) {
-                    $cliente->cedula = $data['cedula'];
                     $cliente->nombre = $data['nombre'];
                     $cliente->fechaNac = $data['fechaNac'];
                     $cliente->email = $data['email'];
