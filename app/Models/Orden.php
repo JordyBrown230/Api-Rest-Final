@@ -22,6 +22,10 @@ class Orden extends Model
         'empleado'
     ];
 
+    public function scopePorCliente($query,$cliente_id){
+        return $query->where('cliente', $cliente_id);
+    }
+
     public function detalleOrden(){
         return $this->hasMany('App\Models\DetalleOrden');
     }

@@ -164,4 +164,25 @@ class ClienteController extends Controller
         }
         return response()->json($response, $response['status']);
     }
+
+    public function getByName($nombre){
+
+        $clientes = Cliente::porNombre($nombre)->get();
+
+        if($clientes->count() > 0) {
+            $response = array(
+                'status' => 200,
+                'message' => 'Cliente encontrado',
+                'data' => $clientes
+            );
+        } else {
+            $response = array(
+                'status' => 404,
+                'message' => 'Cliente no encontrado'
+            );
+        }
+        return response()->json($response, $response['status']);
+
+    }
+
 }

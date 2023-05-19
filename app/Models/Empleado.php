@@ -23,6 +23,16 @@ class Empleado extends Model
         'puesto'
     ];
 
+    public function scopePorPuesto($query, $nombrePuesto){
+    
+    return $query->whereHas('puesto', function($query) use ($nombrePuesto){
+        $query->where('nombre', $nombrePuesto);
+        });
+
+    }
+
+
+
     public function puesto(){
         return $this->belongsTo('App\Models\Puesto','puesto');
     }
@@ -41,3 +51,5 @@ class Empleado extends Model
     }
 
 }
+
+
