@@ -63,7 +63,7 @@ class EmpleadoController extends Controller
             'fechaNac' => 'required|date',
             'fechaIngreso' => 'required|date',
             'email' => 'required|email|unique:empleado,email',
-            'puesto' => 'required|exists:puesto,idPuesto',
+            'tipoEmpleado' => 'required|regex:/^[a-zA-Z\s]+$/u',
         ];
 
         $validate = \validator($data, $rules);
@@ -75,7 +75,7 @@ class EmpleadoController extends Controller
             $empleado->fechaNac = $data['fechaNac'];
             $empleado->fechaIngreso = $data['fechaIngreso'];
             $empleado->email = $data['email'];
-            $empleado->puesto = $data['puesto'];
+            $empleado->tipoEmpleado = $data['tipoEmpleado'];
             $empleado->save();
 
             $response = [
@@ -117,7 +117,7 @@ class EmpleadoController extends Controller
                 'fechaNac' => 'required|date',
                 'fechaIngreso' => 'required|date',
                 'email' => 'required|email',
-                'puesto' => 'required|exists:puesto,idPuesto',
+                'tipoEmpleado' => 'required|regex:/^[a-zA-Z\s]+$/u',
             ];
     
             $validate = \validator($data, $rules);
@@ -131,7 +131,7 @@ class EmpleadoController extends Controller
                     $empleado->fechaNac = $data['fechaNac'];
                     $empleado->fechaIngreso = $data['fechaIngreso'];
                     $empleado->email = $data['email'];
-                    $empleado->puesto = $data['puesto'];
+                    $empleado->tipoEmpleado = $data['tipoEmpleado'];
                     $empleado->save();
     
                     $response = [
@@ -178,23 +178,26 @@ class EmpleadoController extends Controller
         return response()->json($response, $response['status']);
     }
 
+    
     public function getByJob($nombrePuesto){
+        $empleados = Empleado::porTipo($nombrePuesto)->get();
 
-        $empleado = Empleado::porPuesto($nombrePuesto)->get();
-        if ($empleado->count() > 0) {
+        if($empleados->count() > 0) {
             $response = array(
                 'status' => 200,
                 'message' => 'Empleado encontrado',
-                'data' => $empleado
+                'data' => $empleados
             );
         } else {
             $response = array(
                 'status' => 404,
                 'message' => 'Empleado no encontrado'
-            ); 
+            );
         }
         return response()->json($response, $response['status']);
 
-        }
+    }
+
+
     }
 
