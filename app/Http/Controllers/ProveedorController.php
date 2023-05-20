@@ -56,11 +56,10 @@ class ProveedorController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'idProveedor' => 'required|numeric',
+            'idProveedor' => 'required|numeric|unique:proveedor,idProveedor',
             'nombreCompania' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u|unique:proveedor,nombreCompania',
             'numTelefono' => 'required|regex:/^(?:\+?\d{1,3}\s?)?(?:\d{2,4}\s?)?\d{1,14}$/|unique:proveedor,numTelefono',
-            'email' => 'required|email',
-          
+            'email' => 'required|email|unique:proveedor,email',    
         ];
 
         $validate = \validator($data, $rules);
@@ -93,7 +92,7 @@ class ProveedorController extends Controller
     return response()->json($response, $response['status']);
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $id){
         $data_input = $request->input('data', null);
 
         if (is_array($data_input)) {
@@ -106,19 +105,16 @@ class ProveedorController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-            'idProveedor' => 'required|numeric',
-            'nombreCompania' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
-            'numTelefono' => 'required|regex:/^(?:\+?\d{1,3}\s?)?(?:\d{2,4}\s?)?\d{1,14}$/',
-            'email' => 'required|email',
-
+                'nombreCompania' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u|unique:proveedor,nombreCompania,'.$id.',idProveedor',
+                'numTelefono' => 'required|regex:/^(?:\+?\d{1,3}\s?)?(?:\d{2,4}\s?)?\d{1,14}$/|unique:proveedor,numTelefono,'.$id.',idProveedor',
+                'email' => 'required|email|unique:proveedor,email,'.$id.',idProveedor',
             ];
     
             $validate = \validator($data, $rules);
     
             if (!($validate->fails())) {
-                    $proveedor = Proveedor::find($data['idProveedor']);
+                    $proveedor = Proveedor::find($id);
                 if ($proveedor) {
-                    $proveedor->idProveedor = $data['idProveedor'];
                     $proveedor->nombreCompania = $data['nombreCompania'];
                     $proveedor->numTelefono = $data['numTelefono'];
                     $proveedor->email = $data['email'];

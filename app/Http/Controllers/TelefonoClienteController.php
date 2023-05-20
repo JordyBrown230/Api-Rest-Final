@@ -89,7 +89,7 @@ class TelefonoClienteController extends Controller
         return response()->json($response, $response['status']);
     } 
     
-    public function update(Request $request){
+    public function update(Request $request, $id){
         $data_input = $request->input('data', null);
         if (is_array($data_input)) {
             $data = $data_input;
@@ -99,15 +99,13 @@ class TelefonoClienteController extends Controller
         if (!empty($data)) {
             $data = array_map('trim', $data);
             $rules = [
-                'idTelefonosCliente'=>'required|exists:telefonocliente,idTelefonosCliente',
-                'numTelefono' => 'required|regex:/^(?:\+?\d{1,3}\s?)?(?:\d{2,4}\s?)?\d{1,14}$/',
+                'numTelefono' => 'required|regex:/^(?:\+?\d{1,3}\s?)?(?:\d{2,4}\s?)?\d{1,14}$/|unique:telefonocliente,numTelefono,'.$id.',idTelefonosCliente',
                 'cliente' => 'required|exists:cliente,cedula',
             ];
             $validate = \validator($data, $rules);
             if (!($validate->fails())) {
-                $telefonoCliente = TelefonoCliente::find($data['idTelefonosCliente']);
+                $telefonoCliente = TelefonoCliente::find($id);
                 if ($telefonoCliente) {
-                    $telefonoCliente->idTelefonosCliente= $data['idTelefonosCliente'];
                     $telefonoCliente->numTelefono= $data['numTelefono'];
                     $telefonoCliente->cliente = $data['cliente'];
                     $telefonoCliente->save();

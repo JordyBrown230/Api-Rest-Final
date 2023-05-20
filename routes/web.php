@@ -29,31 +29,6 @@ use App\Http\Controllers\ClienteController;
 Route::prefix('api')->group(
     function(){
         //RUTAS ESPECÍFICAS
-        Route::put('/usuario',[UsuarioController::class, 'update']);
-
-        Route::put('/empleado', [EmpleadoController::class, 'update']);
-
-        Route::put('/orden',[OrdenController::class,'update']);
-
-        Route::put('/categoria',[CategoriaController::class,'update']);
-
-        Route::put('/producto',[ProductoController::class,'update']);
-
-        Route::put('/envio',[EnvioController::class,'update']);
-
-        Route::put('/telefonocliente',[TelefonoClienteController::class,'update']);
-
-        Route::put('/vehiculo',[VehiculoController::class,'update']);
-
-        Route::put('/direccioncliente',[DireccionClienteController::class,'update']);
-
-        Route::put('/puesto',[PuestoController::class,'update']);
-
-        Route::put('/proveedor',[ProveedorController::class,'update']);
-
-        Route::put('/detalleorden',[DetalleOrdenController::class,'update']);
-
-        Route::put('/cliente',[ClienteController::class,'update']);
 
         Route::post('/usuario/login',[UsuarioController::class,'login']);
 
@@ -72,33 +47,31 @@ Route::prefix('api')->group(
 
 
        //RUTAS AUTOMÁTICAS Restful
-        Route::resource('/categoria',CategoriaController::class,['except'=>['create','edit','update']]);
+        Route::resource('/categoria',CategoriaController::class,['except'=>['create','edit']]);
 
-        Route::resource('/usuario', UsuarioController::class,['except'=>['create','edit','update']]);
+        Route::resource('/usuario', UsuarioController::class,['except'=>['create','edit']]);
 
-        Route::resource('/puesto',PuestoController::class,['except'=>['create','edit','update']]);
+        Route::resource('/empleado',EmpleadoController::class,['except'=>['create','edit']]);
 
-        Route::resource('/empleado',EmpleadoController::class,['except'=>['create','update','edit']]);
+        Route::resource('/orden',OrdenController::class,['except'=>['create','edit']]);
 
-        Route::resource('/orden',OrdenController::class,['except'=>['create','edit','update']]);
+        Route::resource('/producto',ProductoController::class,['except'=>['create','edit']]);
 
-        Route::resource('/producto',ProductoController::class,['except'=>['create','edit','update']]);
+        Route::resource('/envio',EnvioController::class,['except'=>['create','edit']]);
 
-        Route::resource('/envio',EnvioController::class,['except'=>['create','edit','update']]);
+        Route::resource('/telefonocliente',TelefonoClienteController::class,['except'=>['create','edit']]);
 
-        Route::resource('/telefonocliente',TelefonoClienteController::class,['except'=>['create','edit','update']]);
+        Route::resource('/vehiculo',VehiculoController::class,['except'=>['create','edit']]);
 
-        Route::resource('/vehiculo',VehiculoController::class,['except'=>['create','edit','update']]);
+        Route::resource('/direccioncliente',DireccionClienteController::class,['except'=>['create','edit']]);
 
-        Route::resource('/direccioncliente',DireccionClienteController::class,['except'=>['create','edit','update']]);
+        Route::resource('/puesto',PuestoController::class,['except'=>['create','edit']]);
 
-        Route::resource('/puesto',PuestoController::class,['except'=>['create','edit','update']]);
+        Route::resource('/proveedor',ProveedorController::class,['except'=>['create','edit']]);
 
-        Route::resource('/proveedor',ProveedorController::class,['except'=>['create','edit','update']]);
+        Route::resource('/detalleorden',DetalleOrdenController::class,['except'=>['create','edit']]);
 
-        Route::resource('/detalleorden',DetalleOrdenController::class,['except'=>['create','edit','update']]);
-
-       Route::resource('/cliente',ClienteController::class,['except'=>['create','edit','update']]);
+      
 
     }
 );

@@ -45,11 +45,11 @@ class UsuarioController extends Controller
         $data = json_decode($dataInput,true);
         $data =array_map('trim',$data);
         $rules = [
-            'nombreUsuario' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u|unique:usuario,nombreUsuario',
-            'password' => 'required',
+            'nombreUsuario' => 'required|alpha_num|unique:usuario,nombreUsuario',
+            'password' => 'required|alpha_num|min:8|max:12',
             'tipoUsuario' =>  'required',
-            'cliente' => 'nullable|exists:cliente,cedula',
-            'empleado' => 'nullable|exists:empleado,idEmpleado'
+            'cliente' => 'nullable|exists:cliente,cedula|unique:usuario,cliente',
+            'empleado' => 'nullable|exists:empleado,idEmpleado|unique:usuario,empleado'
         ];
         $valid = \validator($data,$rules);
         if(!($valid->fails())){
@@ -75,24 +75,22 @@ class UsuarioController extends Controller
     } 
     
 
-    public function update(Request $request){
+    public function update(Request $request, $id){
         $dataInput = $request->input('data',null);
         $data = json_decode($dataInput,true);
         if(!empty($data)){
             $data =array_map('trim',$data);
             $rules = [
-                'idUsuario' => 'required|alpha|exists:usuario,idUsuario',
-                'nombreUsuario' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
-                'password' => 'required',
+                'nombreUsuario' => 'required|alpha_num|unique:usuario,nombreUsuario,'.$id.',idUsuario',
+                'password' => 'required|alpha_num|min:8|max:12',
                 'tipoUsuario' =>  'required',
-                'cliente' => 'nullable|exists:cliente,cedula',
-                'empleado' => 'nullable|exists:empleado,idEmpleado'
+                'cliente' => 'nullable|exists:cliente,cedula|unique:usuario,cliente,'.$id.',idUsuario',
+                'empleado' => 'nullable|exists:empleado,idEmpleado|unique:usuario,empleado,'.$id.',idUsuario'
             ];
             $valid = \validator($data,$rules);
                 if(!($valid->fails())){
-                    $user= Usuario::find($data['idUsuario']);
+                    $user= Usuario::find($id);
                     if ($user) {
-                        $user->idUsuario = $data['idUsuario'];
                         $user->nombreUsuario = $data['nombreUsuario'];
                         $user->password = hash('sha256',$data['password']);   
                         $user->tipoUsuario = $data['tipoUsuario'];

@@ -92,7 +92,7 @@ class DetalleOrdenController extends Controller
     return response()->json($response, $response['status']);
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $id){
         $data_input = $request->input('data', null);
 
         if (is_array($data_input)) {
@@ -105,7 +105,6 @@ class DetalleOrdenController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'idDetalleOrden' => 'required|numeric|exists:detalleorden,idDetalleOrden',
                 'cantidad' => 'required|numeric',
                 'precioUnitario' => 'required|numeric',
                 'ivaUnitario'=> 'required|numeric',
@@ -115,9 +114,8 @@ class DetalleOrdenController extends Controller
             $validate = \validator($data, $rules);
     
             if (!($validate->fails())) {
-                    $detalleOrden = DetalleOrden::find($data['idDetalleOrden']);
+                    $detalleOrden = DetalleOrden::find($id);
                 if ($detalleOrden) {
-                    $detalleOrden->idDetalleOrden = $data['idDetalleOrden'];
                     $detalleOrden->cantidad = $data['cantidad'];
                     $detalleOrden->precioUnitario = $data['precioUnitario'];
                     $detalleOrden->ivaUnitario = $data['ivaUnitario'];

@@ -56,7 +56,7 @@ class VehiculoController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'placa' => 'required|alpha_num',
+            'placa' => 'required|alpha_num|unique:vehiculo,placa',
             'color' => 'required|alpha',
             'tipo' => 'required|regex:/^[a-zA-Z\s]+$/u',
             'modelo' => 'required|numeric',
@@ -93,7 +93,7 @@ class VehiculoController extends Controller
     return response()->json($response, $response['status']);
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $id){
         $data_input = $request->input('data', null);
 
         if (is_array($data_input)) {
@@ -106,8 +106,7 @@ class VehiculoController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'numUnidad' => 'required|numeric|exists:vehiculo,numUnidad',
-                'placa' => 'required|alpha_num|unique:vehiculo,placa',
+                'placa' => 'required|alpha_num|unique:vehiculo,placa,'.$id.',numUnidad',
                 'color' => 'required|alpha',
                 'tipo' => 'required|regex:/^[a-zA-Z\s]+$/u',
                 'modelo' => 'required|numeric',
@@ -116,9 +115,8 @@ class VehiculoController extends Controller
             $validate = \validator($data, $rules);
     
             if (!($validate->fails())) {
-                    $vehiculo = Vehiculo::find($data['numUnidad']);
+                    $vehiculo = Vehiculo::find($id);
                 if ($vehiculo) {
-                    $vehiculo->numUnidad = $data['numUnidad'];
                     $vehiculo->placa = $data['placa'];
                     $vehiculo->color = $data['color'];
                     $vehiculo->tipo = $data['tipo'];
