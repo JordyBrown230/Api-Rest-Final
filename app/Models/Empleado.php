@@ -20,9 +20,10 @@ class Empleado extends Model
         'fechaNac',
         'fechaIngreso',
         'email', 
-        'puesto'
+        'tipoEmpleado'
     ];
 
+    /*
     public function scopePorPuesto($query, $nombrePuesto){
     
     return $query->whereHas('puesto', function($query) use ($nombrePuesto){
@@ -30,13 +31,10 @@ class Empleado extends Model
         });
 
     }
-
-
-
-    public function puesto(){
-        return $this->belongsTo('App\Models\Puesto','puesto');
-    }
-
+   */
+   public function scopePorTipo($query,$nombrePuesto){
+    return $query->where('tipoEmpleado', 'LIKE', $nombrePuesto. '%');
+}
 
     public function ordenes(){
         return $this->hasMany('App\Models\Orden');
