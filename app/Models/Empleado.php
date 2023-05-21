@@ -22,19 +22,10 @@ class Empleado extends Model
         'email', 
         'tipoEmpleado'
     ];
-
-    /*
-    public function scopePorPuesto($query, $nombrePuesto){
     
-    return $query->whereHas('puesto', function($query) use ($nombrePuesto){
-        $query->where('nombre', $nombrePuesto);
-        });
-
-    }
-   */
    public function scopePorTipo($query,$nombrePuesto){
     return $query->where('tipoEmpleado', 'LIKE', $nombrePuesto. '%');
-}
+    }
 
     public function ordenes(){
         return $this->hasMany('App\Models\Orden');

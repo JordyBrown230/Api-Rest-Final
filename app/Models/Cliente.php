@@ -30,6 +30,11 @@ class Cliente extends Model
         return $telefonoCliente;
     }
     
+    public function getDireccionCliente($cedulaCliente) {
+        $telefonoCliente = DireccionCliente::where('cliente', $cedulaCliente)->pluck('direccion');
+        
+        return $telefonoCliente;
+    }
 
     public function telefonos(){
         return $this->hasMany('App\Models\TelefonoCliente');

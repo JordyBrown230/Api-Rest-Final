@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\PuestoController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\TelefonoClienteController;
 use App\Http\Controllers\OrdenController;
@@ -45,6 +44,7 @@ Route::prefix('api')->group(
 
         Route::get('/cliente/telefonocliente/{id}',[ClienteController::class,'getNumsByClient']);
 
+        Route::get('/cliente/direccioncliente/{id}',[ClienteController::class,'getDirByClient']);
 
 
        //RUTAS AUTOMÁTICAS Restful
@@ -66,11 +66,11 @@ Route::prefix('api')->group(
 
         Route::resource('/direccioncliente',DireccionClienteController::class,['except'=>['create','edit']]);
 
-        Route::resource('/puesto',PuestoController::class,['except'=>['create','edit']]);
-
         Route::resource('/proveedor',ProveedorController::class,['except'=>['create','edit']]);
 
         Route::resource('/detalleorden',DetalleOrdenController::class,['except'=>['create','edit']]);
+
+        Route::resource('/cliente',ClienteController::class,['except'=>['create','edit']]);
 
       
 

@@ -185,26 +185,46 @@ class ClienteController extends Controller
 
     }
 
-  public function getNumsByClient($id)
-{
-    $cliente = new Cliente();
-    $numerosTelefonicos = $cliente->getTelefonoCliente($id);
+    public function getNumsByClient($id)
+    {
+        $cliente = new Cliente();
+        $numerosTelefonicos = $cliente->getTelefonoCliente($id);
 
-    if ($numerosTelefonicos->count() > 0) {
-        $response = array(
-            'status' => 200,
-            'message' => 'Numeros encontrados',
-            'data' => $numerosTelefonicos
-        );
-    } else {
-        $response = array(
-            'status' => 400,
-            'message' => 'No hay numeros registrados'
-        );
+        if ($numerosTelefonicos->count() > 0) {
+            $response = array(
+                'status' => 200,
+                'message' => 'Numeros encontrados',
+                'data' => $numerosTelefonicos
+            );
+        } else {
+            $response = array(
+                'status' => 404,
+                'message' => 'Numeros no encontrados'
+            );
+        }
+
+        return response()->json($response, $response['status']);
     }
-
-    return response()->json($response, $response['status']);
-}
     
+    public function getDirByClient($id)
+    {
+        $cliente = new Cliente();
+        $direcciones = $cliente->getDireccionCliente($id);
+
+        if ($direcciones->count() > 0) {
+            $response = array(
+                'status' => 200,
+                'message' => 'Direcciones encontradas',
+                'data' => $direcciones
+            );
+        } else {
+            $response = array(
+                'status' => 404,
+                'message' => 'Direcciones no encontradas'
+            );
+        }
+
+        return response()->json($response, $response['status']);
+    }
 
 }
