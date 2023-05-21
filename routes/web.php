@@ -43,6 +43,7 @@ Route::prefix('api')->group(
 
         Route::get('/empleado/puesto/{nombre}',[EmpleadoController::class,'getByJob']);
 
+        Route::get('/cliente/telefonocliente/{id}',[ClienteController::class,'getNumsByClient']);
 
 
 

@@ -24,6 +24,13 @@ class Cliente extends Model
         return $query->where('nombre', 'LIKE', $nombre. '%');
     }
 
+    public function getTelefonoCliente($cedulaCliente) {
+        $telefonoCliente = TelefonoCliente::where('cliente', $cedulaCliente)->pluck('numTelefono');
+        
+        return $telefonoCliente;
+    }
+    
+
     public function telefonos(){
         return $this->hasMany('App\Models\TelefonoCliente');
     }

@@ -185,4 +185,26 @@ class ClienteController extends Controller
 
     }
 
+  public function getNumsByClient($id)
+{
+    $cliente = new Cliente();
+    $numerosTelefonicos = $cliente->getTelefonoCliente($id);
+
+    if ($numerosTelefonicos->count() > 0) {
+        $response = array(
+            'status' => 200,
+            'message' => 'Numeros encontrados',
+            'data' => $numerosTelefonicos
+        );
+    } else {
+        $response = array(
+            'status' => 400,
+            'message' => 'No hay numeros registrados'
+        );
+    }
+
+    return response()->json($response, $response['status']);
+}
+    
+
 }
