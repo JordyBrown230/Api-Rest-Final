@@ -57,12 +57,11 @@ class ProductoController extends Controller
 
         $rules = [
             'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u|unique:producto,nombre',
-            'precioUnitario' => 'required|numeric',
             'stock'=> 'required|numeric',
             'foto' => 'nullable|image',
             'proveedor' => 'required|exists:proveedor,idProveedor',
             'categoria'  => 'required|exists:categoria,idCategoria',
-            'detalleOrden'  => 'nullable'
+            'detalleOrden'  => 'nullable|exists:detalleOrden,idDetalleOrden'
         ];
 
         $validate = \validator($data, $rules);
@@ -71,7 +70,6 @@ class ProductoController extends Controller
             // ...
         $producto = new Producto();
         $producto->nombre = $data['nombre'];
-        $producto->precioUnitario = $data['precioUnitario'];
         $producto->stock = $data['stock'];
         $producto->foto = empty($data['foto']) ? null : $data['foto'];
         $producto->proveedor = $data['proveedor'];
@@ -113,7 +111,6 @@ class ProductoController extends Controller
     
             $rules = [
                 'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u|unique:producto,nombre,'.$id.',idProducto',
-                'precioUnitario' => 'required|numeric',
                 'stock'=> 'required|numeric',
                 'foto' => 'nullable|image',
                 'proveedor' => 'required|exists:proveedor,idProveedor',
@@ -127,7 +124,6 @@ class ProductoController extends Controller
                     $producto = Producto::find($id);
                 if ($producto) {
                     $producto->nombre = $data['nombre'];
-                    $producto->precioUnitario = $data['precioUnitario'];
                     $producto->stock = $data['stock'];
                     $producto->foto = empty($data['foto']) ? null : $data['foto'];
                     $producto->proveedor = $data['proveedor'];
