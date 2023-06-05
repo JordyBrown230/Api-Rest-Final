@@ -72,7 +72,8 @@ Route::prefix('api')->group(
 
         Route::resource('/cliente',ClienteController::class,['except'=>['create','edit']]);
 
-      
+        Route::post('/usuario/upload',[UsuarioController::class,'uploadImage']);
+        Route::get('/usuario/getimage/{filename}',[UsuarioController::class,'getImage']);
 
     }
 );
