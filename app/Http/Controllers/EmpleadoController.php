@@ -47,18 +47,12 @@ class EmpleadoController extends Controller
 
     public function store(Request $request){
     $data_input = $request->input('data', null);
-
-    if (is_array($data_input)) {
-        $data = $data_input;
-    } else {
-        $data = json_decode($data_input, true);
-    }
-
+    $data = json_decode($data_input, true);
     if (!empty($data)) {
         $data = array_map('trim', $data);
 
         $rules = [
-            'cedula' => 'required|alpha_num|min:8|unique:empleado,cedula',
+            'cedula' => 'required|alpha_num|unique:empleado,cedula',
             'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u',
             'fechaNac' => 'required|date',
             'fechaIngreso' => 'required|date',
@@ -111,7 +105,7 @@ class EmpleadoController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'cedula' => 'required|alpha_num|min:8|unique:empleado,cedula,'.$id.',idEmpleado',
+                'cedula' => 'required|alpha_num|unique:empleado,cedula,'.$id.',idEmpleado',
                 'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u',
                 'fechaNac' => 'required|date',
                 'fechaIngreso' => 'required|date',
