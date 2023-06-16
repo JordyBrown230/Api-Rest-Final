@@ -56,7 +56,6 @@ class ProveedorController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'idProveedor' => 'required|numeric|unique:proveedor,idProveedor',
             'nombreCompania' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u|unique:proveedor,nombreCompania',
             'numTelefono' => 'required|regex:/^(?:\+?\d{1,3}\s?)?(?:\d{2,4}\s?)?\d{1,14}$/|unique:proveedor,numTelefono',
             'email' => 'required|email|unique:proveedor,email',    
@@ -66,7 +65,6 @@ class ProveedorController extends Controller
 
         if (!($validate->fails())) {
             $proveedor = new Proveedor();
-            $proveedor->idProveedor = $data['idProveedor'];
             $proveedor->nombreCompania = $data['nombreCompania'];
             $proveedor->numTelefono = $data['numTelefono'];
             $proveedor->email = $data['email'];
