@@ -16,7 +16,8 @@ class EnvioController extends Controller
     }
     
     public function index(){
-        $data=Envio::all();
+        //$data=Envio::all();
+        $data = Envio::with('chofer:idEmpleado,nombre')->get();
         $response=array(
             'status'=>200,
             'message'=>'Consulta completada satisfactoriamente',
@@ -72,7 +73,7 @@ class EnvioController extends Controller
 
             $response = [
                 'status' => 201,
-                'message' => 'Datos guardados correctamente',
+                'message' => 'Datos guardados correctamente!',
             ];
         } else {
             $response = [

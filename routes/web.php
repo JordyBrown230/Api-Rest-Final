@@ -74,6 +74,7 @@ Route::prefix('api')->group(
 
         Route::post('/usuario/upload',[UsuarioController::class,'uploadImage']);
         Route::get('/usuario/getimage/{filename}',[UsuarioController::class,'getImage']);
+        Route::post('/usuario/login',[UsuarioController::class,'login']);
 
     }
 );
