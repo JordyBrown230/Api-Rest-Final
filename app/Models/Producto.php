@@ -19,7 +19,8 @@ class Producto extends Model
         'foto',
         'proveedor',
         'categoria',
-        'detalleOrden'
+        'detalleOrden',
+        'precioUnitario'
     ];
 
     public function detalleOrden(){

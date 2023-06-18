@@ -60,7 +60,6 @@ class VehiculoController extends Controller
             'color' => 'required|alpha',
             'tipo' => 'required|regex:/^[a-zA-Z\s]+$/u',
             'modelo' => 'required|numeric',
-            
         ];
 
         $validate = \validator($data, $rules);
