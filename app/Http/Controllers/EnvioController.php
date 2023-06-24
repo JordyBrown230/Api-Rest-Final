@@ -58,8 +58,8 @@ class EnvioController extends Controller
 
         $rules = [
             'direccion' => 'required|regex:/^[a-zA-Z0-9\s.,]+$/u',
-            'chofer'  => 'required|exists:empleado,idEmpleado',
-            'vehiculo'  => 'required|exists:vehiculo,numUnidad'
+            'chofer'  => 'nullable|exists:empleado,idEmpleado',
+            'vehiculo'  => 'nullable|exists:vehiculo,numUnidad'
         ];
 
         $validate = \validator($data, $rules);
@@ -67,8 +67,8 @@ class EnvioController extends Controller
         if (!($validate->fails())) {
             $envio = new Envio();
             $envio->direccion = $data['direccion'];
-            $envio->chofer = $data['chofer'];
-            $envio->vehiculo= $data['vehiculo'];
+            $envio->chofer = empty($data['chofer']) ? null : $data['chofer'];
+            $envio->vehiculo= empty($data['vehiculo']) ? null : $data['vehiculo'];
             $envio->save();
 
             $response = [

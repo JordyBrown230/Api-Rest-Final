@@ -76,6 +76,8 @@ Route::prefix('api')->group(
         Route::get('/usuario/getimage/{filename}',[UsuarioController::class,'getImage']);
         Route::post('/usuario/login',[UsuarioController::class,'login']);
 
+        Route::post('/generar-orden', [OrdenController::class, 'generarOrden']);
+
     }
 );
 

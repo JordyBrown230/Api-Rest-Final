@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Orden;
 use Illuminate\Http\Request;
+use App\Models\Envio;
+use App\Models\DetalleOrden;
 
 class OrdenController extends Controller
 {
@@ -57,11 +59,11 @@ class OrdenController extends Controller
 
         $rules = [
             'tipoRetiro' => 'required|regex:/^[a-zA-Z\s]+$/u',
-            'fechaOrden' => 'required|date',
+            //'fechaOrden' => 'required|date',
             'total'=> 'required|numeric',
             'ivaTotal' => 'required|numeric',
             'cliente'  => 'required|exists:cliente,cedula',
-            'empleado'  => 'required|exists:empleado,idEmpleado',
+            'empleado'  => 'nullable|exists:empleado,idEmpleado',
             'envio'  => 'nullable|exists:envio,idEnvio',
         ];
 
@@ -70,11 +72,11 @@ class OrdenController extends Controller
         if (!($validate->fails())) {
             $orden = new Orden();
             $orden->tipoRetiro = $data['tipoRetiro'];
-            $orden->fechaOrden = $data['fechaOrden'];
+            $orden->fechaOrden = now();
             $orden->total = $data['total'];
             $orden->ivaTotal = $data['ivaTotal'];
             $orden->cliente = $data['cliente'];
-            $orden->empleado= $data['empleado'];
+            $orden->empleado= empty($data['empleado']) ? null : $data['empleado'];
             $orden->envio = empty($data['envio']) ? null : $data['envio'];
             $orden->save();
 
@@ -197,4 +199,50 @@ class OrdenController extends Controller
         return response()->json($response, $response['status']);
 
     }
+
+    public function generarOrden(Request $request){
+
+        $tipoRetiro = $request->input('tipoRetiro');
+        $direccionEnvio = $request->input('direccionEnvio');
+        $total = $request->input('total');
+        $ivaTotal = $request->input('ivaTotal');
+        $cliente = $request->input('cliente');
+        $detallesOrden = $request->input('detalles');
+
+        $envio = new Envio();
+        $envio->direccion = $direccionEnvio;
+        // Crear una nueva orden
+        $orden = new Orden();
+        $orden->tipoRetiro = $tipoRetiro;
+        $orden->fechaOrden = now();
+        $orden->total = $total;
+        $orden->ivaTotal = $ivaTotal;
+        $orden->cliente = $cliente;
+
+        if ($tipoRetiro === 'Envio') {
+            $envio->save(); // en caso que sea envio se debe generar ese envio
+            $orden->envio = $envio->idEnvio; // Asociar el envío a la orden
+        }
+
+        // Guardar la orden
+        $orden->save();
+        foreach ($detallesOrden as $detalle) {
+            $detalleOrden = new DetalleOrden();
+            $detalleOrden->orden = $orden->idOrden;
+            $detalleOrden->cantidad = $detalle['cantidad'];
+            $detalleOrden->precioUnitario = $detalle['precioUnitario'];
+            $detalleOrden->ivaUnitario = $detalle['ivaUnitario'];
+            $detalleOrden->producto = $detalle['producto'];
+            $detalleOrden->save();
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Orden generada exitosamente',
+            'orden' => $orden,
+            'envio' => $envio,
+            'detalles' => $detallesOrden
+        ]);
+    }
+
 }

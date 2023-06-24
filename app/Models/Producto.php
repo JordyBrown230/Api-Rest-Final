@@ -19,12 +19,11 @@ class Producto extends Model
         'foto',
         'proveedor',
         'categoria',
-        'detalleOrden',
         'precioUnitario'
     ];
 
     public function detalleOrden(){
-        return $this->belongsTo('App\Models\DetalleOrden','detalleOrden');
+        return $this->hasMany('App\Models\DetalleOrden');
     }
 
     public function proveedor(){

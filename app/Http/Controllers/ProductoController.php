@@ -16,14 +16,21 @@ class ProductoController extends Controller
     }
     
     public function index(){
-        $data=Producto::all();
-        $response=array(
-            'status'=>200,
-            'message'=>'Consulta completada satisfactoriamente',
-            'data'=>$data
+        $data = Producto::all()->map(function ($producto) {
+            $producto->foto = utf8_encode($producto->foto);
+            return $producto;
+        });
+        $data = Producto::select('idProducto', 'nombre', 'precioUnitario', 'stock','proveedor','categoria', 'created_at', 'updated_at')->get();
+    
+        $response = array(
+            'status' => 200,
+            'message' => 'Consulta completada satisfactoriamente',
+            'data' => $data
         );
-        return response()->json($response,200);
+    
+        return response()->json($response, 200);
     }
+    
 
        public function show($id)
     {

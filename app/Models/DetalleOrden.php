@@ -17,11 +17,12 @@ class DetalleOrden extends Model
         'cantidad',
         'precioUnitario',
         'ivaUnitario',
-        'orden'
+        'orden',
+        'producto'
     ];
 
-    public function productos(){
-        return $this->hasMany('App\Models\Producto');
+    public function producto(){
+        return $this->belongsTo('App\Models\Producto','producto');
     }
 
     public function orden(){
