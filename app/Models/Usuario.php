@@ -17,7 +17,8 @@ class Usuario extends Model
         'password',
         'tipoUsuario',
         'cliente',
-        'empleado'
+        'empleado',
+        'remember_token'
     ];
 
   

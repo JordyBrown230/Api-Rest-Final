@@ -13,7 +13,7 @@ class UsuarioController extends Controller
 
     } 
     public function __construct(){
-        $this->middleware('api.auth',['except'=>['index','show','login','store']]);
+
 
     }
     public function index(){
@@ -59,7 +59,7 @@ class UsuarioController extends Controller
             $user->nombreUsuario = $data['nombreUsuario'];
             $user->password = hash('sha256',$data['password']);   
             $user->tipoUsuario = $data['tipoUsuario'];
-            $user->cliente = empty($data['cliente']) ? null : $data['cliente'];
+            $user->cliente =  empty($data['cliente']) ? null : $data['cliente'];
             $user->empleado = empty($data['empleado']) ? null : $data['empleado'];
             $user->save();
             $response = array(
@@ -150,6 +150,10 @@ class UsuarioController extends Controller
         $valid = \validator($data,$rules);
         if(!$valid->fails()){
             $response = $jwtAuth->getToken($data['nombreUsuario'],$data['password']);
+            $usuario = Usuario::where('nombreUsuario', $data['nombreUsuario'])->first();
+            $token = $response;
+            $usuario->remember_token = $token;
+            $usuario->save();
             return response()->json($response);
         }else{
             $response = array(
@@ -172,6 +176,35 @@ class UsuarioController extends Controller
                 'message' => 'Token no encontrado',
             );
         }
+        return response()->json($response);
+    }
+
+    public function checkToken(Request $request)
+    {
+        $token = $request->header('beartoken'); // Obtener el token del encabezado de la solicitud
+        
+        if ($token === null) {
+            $response = array(
+                'status' => 400,
+                'message' => 'Error, token no proporcionado en el encabezado'
+            );
+            return response()->json($response);
+        }
+        
+        $user = Usuario::where('remember_token', $token)->first();
+        
+        if ($user) {
+            $response = array(
+                'status' => 200,
+                'message' => 'Token coincide'
+            );
+        } else {
+            $response = array(
+                'status' => 400,
+                'message' => 'Error, token no coincide con el elemento en la base de datos'
+            );
+        }
+        
         return response()->json($response);
     }
 }

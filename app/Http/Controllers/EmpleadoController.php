@@ -190,6 +190,26 @@ class EmpleadoController extends Controller
 
     }
 
+    
+    public function getByCed($cedula){
+        $empleado = Empleado::where('cedula', $cedula)->first();
+
+        if($empleado->count() > 0) {
+            $response = array(
+                'status' => 200,
+                'message' => 'Empleado encontrado',
+                'data' => $empleado
+            );
+        } else {
+            $response = array(
+                'status' => 404,
+                'message' => 'Empleado no encontrado'
+            );
+        }
+        return response()->json($response, $response['status']);
+
+    }
+
 
     }
 

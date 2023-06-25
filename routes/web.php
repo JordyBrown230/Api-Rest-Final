@@ -37,6 +37,8 @@ Route::prefix('api')->group(
 
         Route::get('/producto/getimage/{filename}',[ProductoController::class,'getImage']);
 
+        Route::post('/user/checktoken',[UserController::class,'checkToken']);
+
         //RUTAS MÉTODOS ESPECIALIZADOS
 
         Route::get('/cliente/nombre/{nombre}',[ClienteController::class,'getByName']);
@@ -44,6 +46,8 @@ Route::prefix('api')->group(
         Route::get('/orden/cliente/{id}',[OrdenController::class,'getByClient']);
 
         Route::get('/empleado/puesto/{nombre}',[EmpleadoController::class,'getByJob']);
+
+        Route::get('/empleado/{cedula}',[EmpleadoController::class,'getByCed']);
 
         Route::get('/cliente/telefonocliente/{id}',[ClienteController::class,'getNumsByClient']);
 
@@ -76,6 +80,7 @@ Route::prefix('api')->group(
         Route::resource('/cliente',ClienteController::class,['except'=>['create','edit']]);
 
         Route::post('/usuario/upload',[UsuarioController::class,'uploadImage']);
+
         Route::get('/usuario/getimage/{filename}',[UsuarioController::class,'getImage']);
         Route::post('/usuario/login',[UsuarioController::class,'login']);
 
