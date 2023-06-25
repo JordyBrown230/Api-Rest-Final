@@ -33,6 +33,9 @@ Route::prefix('api')->group(
 
         Route::get('/usuario/getidentity',[UsuarioController::class,'getIdentity']);
 
+        Route::post('/producto/upload',[ProductoController::class,'uploadImage']);
+
+        Route::get('/producto/getimage/{filename}',[ProductoController::class,'getImage']);
 
         //RUTAS MÉTODOS ESPECIALIZADOS
 

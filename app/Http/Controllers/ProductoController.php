@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class ProductoController extends Controller
 {
     public function __construct()
     {
-        
+    $this->middleware('api.auth',['except'=>['index','show','getImage','store']]);
     }
 
     public function __invoke(){
@@ -16,19 +20,13 @@ class ProductoController extends Controller
     }
     
     public function index(){
-        $data = Producto::all()->map(function ($producto) {
-            $producto->foto = utf8_encode($producto->foto);
-            return $producto;
-        });
-        $data = Producto::select('idProducto', 'nombre', 'precioUnitario', 'stock','proveedor','categoria', 'created_at', 'updated_at')->get();
-    
-        $response = array(
-            'status' => 200,
-            'message' => 'Consulta completada satisfactoriamente',
-            'data' => $data
+        $data = Producto::all();
+        $response =array(
+            'status'=>200,
+            'message'=>"Consulta generada exitosamente!",
+            "data"=>$data
         );
-    
-        return response()->json($response, 200);
+        return response()->json($response,200);
     }
     
 
@@ -53,11 +51,7 @@ class ProductoController extends Controller
     public function store(Request $request){
     $data_input = $request->input('data', null);
 
-    if (is_array($data_input)) {
-        $data = $data_input;
-    } else {
-        $data = json_decode($data_input, true);
-    }
+    $data = json_decode($data_input, true);
 
     if (!empty($data)) {
         $data = array_map('trim', $data);
@@ -65,10 +59,10 @@ class ProductoController extends Controller
         $rules = [
             'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u|unique:producto,nombre',
             'stock'=> 'required|numeric',
-            'foto' => 'nullable|image',
+            'image' => 'required',
             'proveedor' => 'required|exists:proveedor,idProveedor',
             'categoria'  => 'required|exists:categoria,idCategoria',
-            'detalleOrden'  => 'nullable|exists:detalleOrden,idDetalleOrden'
+            'precioUnitario' => 'required|numeric',
         ];
 
         $validate = \validator($data, $rules);
@@ -78,10 +72,11 @@ class ProductoController extends Controller
         $producto = new Producto();
         $producto->nombre = $data['nombre'];
         $producto->stock = $data['stock'];
-        $producto->foto = empty($data['foto']) ? null : $data['foto'];
+        $producto->image = $data['image'];
         $producto->proveedor = $data['proveedor'];
         $producto->categoria = $data['categoria'];
-        $producto->detalleOrden = empty($data['detalleOrden']) ? null : $data['detalleOrden'];
+        $producto->precioUnitario = $data['precioUnitario'];
+
         $producto->save();
 
             $response = [
@@ -119,10 +114,10 @@ class ProductoController extends Controller
             $rules = [
                 'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u|unique:producto,nombre,'.$id.',idProducto',
                 'stock'=> 'required|numeric',
-                'foto' => 'nullable|image',
+                'image' => 'required',
                 'proveedor' => 'required|exists:proveedor,idProveedor',
                 'categoria'  => 'required|exists:categoria,idCategoria',
-                'detalleOrden'  => 'nullable|exists:detalleOrden,idDetalleOrden',
+                'precioUnitario' => 'required|numeric',
             ];
     
             $validate = \validator($data, $rules);
@@ -132,10 +127,10 @@ class ProductoController extends Controller
                 if ($producto) {
                     $producto->nombre = $data['nombre'];
                     $producto->stock = $data['stock'];
-                    $producto->foto = empty($data['foto']) ? null : $data['foto'];
+                    $producto->image = $data['image'];
                     $producto->proveedor = $data['proveedor'];
                     $producto->categoria = $data['categoria'];
-                    $producto->detalleOrden = empty($data['detalleOrden']) ? null : $data['detalleOrden'];
+                    $producto->precioUnitario = $data['precioUnitario'];
                     $producto->save();
 
                     $response = [
@@ -180,5 +175,47 @@ class ProductoController extends Controller
             );
         }
         return response()->json($response, $response['status']);
+    }
+
+    public function uploadImage(Request $request){        
+        $valid=Validator::make($request->all(),['file0'=>'required|image|mimes:jpg,png']);
+        if(!$valid->fails()){
+            $image=$request->file('file0');
+            $filename=time().$image->getClientOriginalName();
+            Storage::disk('products')->put($filename,File::get($image));
+            $response=array(
+                'status'=>200,
+                'message'=>'Imagen guardada exitosamente',
+                'image_name'=>$filename
+            );
+
+        }else{
+            $response=array(
+                'status'=>406,
+                'message'=>'Error al subir el archivo',
+                'errors'=>$valid->errors(),
+            );
+        }
+        return response()->json($response,$response['status']);
+    }
+    public function getImage($filename){
+        if(isset($filename)){
+            $exist=Storage::disk('products')->exists($filename);
+            if($exist){
+                $file=Storage::disk('products')->get($filename);
+                return new Response($file,200);
+            }else{
+                $response=array(
+                    'status'=>404,
+                    'message'=>'Imagen no encontrada',
+                );
+            }
+        }else{
+            $response=array(
+                'status'=>404,
+                'message'=>'No se definió correctamente el nombre de la imagen',
+            );
+        }
+        return response()->json($response,404);
     }
 }

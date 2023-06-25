@@ -13,7 +13,7 @@ class UsuarioController extends Controller
 
     } 
     public function __construct(){
-        $this->middleware('api.auth',['except'=>['index','show','login']]);
+        $this->middleware('api.auth',['except'=>['index','show','login','store']]);
 
     }
     public function index(){
@@ -139,48 +139,6 @@ class UsuarioController extends Controller
             );
         }
         return response()->json($response, $response['status']);
-    }
-
-    public function uploadImage(Request $request){        
-        $valid=\Validator::make($request->all(),['file0'=>'required|image|mimes:jpg,png']);
-        if(!$valid->fails()){
-            $image=$request->file('file0');
-            $filename=time().$image->getClientOriginalName();
-            \Storage::disk('users')->put($filename,\File::get($image));
-            $response=array(
-                'status'=>200,
-                'message'=>'Imagen guardada exitosamente',
-                'image_name'=>$filename
-            );
-
-        }else{
-            $response=array(
-                'status'=>406,
-                'message'=>'Error al subir el archivo',
-                'errors'=>$valid->errors(),
-            );
-        }
-        return response()->json($response,$response['status']);
-    }
-    public function getImage($filename){
-        if(isset($filename)){
-            $exist=\Storage::disk('users')->exists($filename);
-            if($exist){
-                $file=\Storage::disk('users')->get($filename);
-                return new Response($file,200);
-            }else{
-                $response=array(
-                    'status'=>404,
-                    'message'=>'Imagen no encontrada',
-                );
-            }
-        }else{
-            $response=array(
-                'status'=>404,
-                'message'=>'No se definió correctamente el nombre de la imagen',
-            );
-        }
-        return response()->json($response,404);
     }
 
     public function login(Request $request){
