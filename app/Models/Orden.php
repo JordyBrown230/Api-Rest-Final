@@ -27,7 +27,7 @@ class Orden extends Model
     }
 
     public function detalleOrden(){
-        return $this->hasMany('App\Models\DetalleOrden');
+        return $this->hasMany('App\Models\DetalleOrden','orden');
     }
 
     public function envio(){

@@ -12,7 +12,7 @@ class ProductoController extends Controller
 {
     public function __construct()
     {
-    $this->middleware('api.auth',['except'=>['index','show','getImage','store']]);
+    $this->middleware('api.auth',['except'=>['index','show','getImage','store','update','destroy']]);
     }
 
     public function __invoke(){
@@ -20,7 +20,7 @@ class ProductoController extends Controller
     }
     
     public function index(){
-        $data = Producto::all();
+        $data = Producto::with('categoria','proveedor')->get();
         $response =array(
             'status'=>200,
             'message'=>"Consulta generada exitosamente!",
@@ -57,12 +57,12 @@ class ProductoController extends Controller
         $data = array_map('trim', $data);
 
         $rules = [
-            'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u|unique:producto,nombre',
-            'stock'=> 'required|numeric',
+            'nombre' => 'required|unique:producto,nombre',
+            'stock'=> 'required',
             'image' => 'required',
-            'proveedor' => 'required|exists:proveedor,idProveedor',
-            'categoria'  => 'required|exists:categoria,idCategoria',
-            'precioUnitario' => 'required|numeric',
+            'proveedor' => 'required',
+            'categoria'  => 'required',
+            'precioUnitario' => 'required',
         ];
 
         $validate = \validator($data, $rules);
@@ -80,7 +80,7 @@ class ProductoController extends Controller
         $producto->save();
 
             $response = [
-                'status' => 201,
+                'status' => 200,
                 'message' => 'Datos guardados correctamente',
             ];
         } else {
@@ -112,12 +112,12 @@ class ProductoController extends Controller
             $data = array_map('trim', $data);
     
             $rules = [
-                'nombre' => 'required|regex:/^[a-zA-Z\s]+$/u|unique:producto,nombre,'.$id.',idProducto',
-                'stock'=> 'required|numeric',
+                'nombre' => 'required|unique:producto,nombre,'.$id.',idProducto',
+                'stock'=> 'required',
                 'image' => 'required',
-                'proveedor' => 'required|exists:proveedor,idProveedor',
-                'categoria'  => 'required|exists:categoria,idCategoria',
-                'precioUnitario' => 'required|numeric',
+                'proveedor' => 'required',
+                'categoria'  => 'required',
+                'precioUnitario' => 'required',
             ];
     
             $validate = \validator($data, $rules);

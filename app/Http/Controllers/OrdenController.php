@@ -18,7 +18,8 @@ class OrdenController extends Controller
     }
     
     public function index(){
-        $data=Orden::all();
+        //$data=Orden::all();
+        $data = Orden::with('detalleOrden')->get();
         $response=array(
             'status'=>200,
             'message'=>'Consulta completada satisfactoriamente',

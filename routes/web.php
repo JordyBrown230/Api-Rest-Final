@@ -47,7 +47,7 @@ Route::prefix('api')->group(
 
         Route::get('/empleado/puesto/{nombre}',[EmpleadoController::class,'getByJob']);
 
-        Route::get('/empleado/{cedula}',[EmpleadoController::class,'getByCed']);
+        Route::get('/empleado/cedula/{cedula}',[EmpleadoController::class,'getByCed']);
 
         Route::get('/cliente/telefonocliente/{id}',[ClienteController::class,'getNumsByClient']);
 
